@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mon-widget-app": {
+    "widget-dashboard": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/mon-widget-app",
+            "outputPath": "dist/widget-dashboard",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "mon-widget-app:build:production"
+              "buildTarget": "widget-dashboard:build:production"
             },
             "development": {
-              "buildTarget": "mon-widget-app:build:development"
+              "buildTarget": "widget-dashboard:build:development"
             }
           },
           "defaultConfiguration": "development"

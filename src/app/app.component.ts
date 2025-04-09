@@ -1,16 +1,10 @@
-import { Component } from '@angular/core'; 
-import { RouterModule } from '@angular/router';
+import { Component } from '@angular/core';
 
-
-
-@Component({ 
-  selector: 'app-root', 
-  templateUrl: './app.component.html', 
-  styleUrls: ['./app.component.scss'],
-  imports: [
-    RouterModule
-  ]
-}) 
-export class AppComponent { 
-  title = 'mon-widget-app'; 
-} 
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'widget-dashboard';
+}

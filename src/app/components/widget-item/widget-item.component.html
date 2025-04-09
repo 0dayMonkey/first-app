@@ -1,37 +1,32 @@
 <div class="widget-item" 
-     [ngStyle]="{'background-color': widget.backgroundColor}" 
-     (click)="onWidgetClick()"> 
-Commande ECHO d‚sactiv‚e.
-  <div class="widget-header"> 
-    <img [src]="widget.icon" alt="{{ widget.title }} icon" class="widget-icon"> 
-    <h3 class="widget-title">{{ widget.title }}</h3> 
-  </div> 
-Commande ECHO d‚sactiv‚e.
-  <div class="widget-content"> 
-    <div *ngIf="isLoading" class="widget-loading"> 
-      <div class="loading-spinner"></div> 
-      <p>Chargement en cours...</p> 
-    </div> 
-Commande ECHO d‚sactiv‚e.
-    <div *ngIf="hasError" class="widget-error"> 
-      <p>Impossible de charger le contenu</p> 
-    </div> 
-Commande ECHO d‚sactiv‚e.
-    <iframe #iframe 
-            *ngIf="!hasError" 
-            [src]="widget.iframeUrl | safeUrl" 
-            frameborder="0" 
-            (load)="onIframeLoad()" 
-            (error)="onIframeError()" 
-            class="widget-iframe" 
-            [class.hidden]="isLoading" 
-            sandbox="allow-same-origin allow-scripts" 
-            loading="lazy" 
-            title="{{ widget.title }}"> 
-    </iframe> 
-  </div> 
-Commande ECHO d‚sactiv‚e.
-  <div class="widget-footer"> 
-    <p class="widget-description">{{ widget.description }}</p> 
-  </div> 
-</div> 
+     [class.active]="widget.active"
+     (click)="onWidgetClick()">
+  
+  <div class="widget-header">
+    <img [src]="widget.icon" alt="Widget icon" class="widget-icon">
+    <h3 class="widget-title">{{ widget.title }}</h3>
+  </div>
+  
+  <div class="widget-content">
+    <!-- Indicateur de chargement -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="spinner"></div>
+      <p>Chargement...</p>
+    </div>
+    
+    <!-- Message d'erreur -->
+    <div *ngIf="hasError" class="error-message">
+      <p>Impossible de charger le contenu</p>
+    </div>
+    
+    <!-- iframe pour le contenu du widget -->
+    <iframe #iframe
+            *ngIf="safeUrl"
+            [src]="safeUrl"
+            frameborder="0"
+            (load)="onIframeLoad()"
+            (error)="onIframeError()"
+            [style.display]="isLoading ? 'none' : 'block'">
+    </iframe>
+  </div>
+</div>

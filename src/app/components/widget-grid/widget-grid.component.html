@@ -1,14 +1,12 @@
-<div class="widget-grid-container"> 
-  <div class="widget-grid" *ngIf="(widgets$ | async) as widgets"> 
-    <ng-container *ngFor="let row of getWidgetRows(widgets)"> 
-      <div class="widget-row"> 
-        <ng-container *ngFor="let widget of row"> 
-          <app-widget-item 
-            [widget]="widget" 
-            (widgetClick)="onWidgetClick($event)"> 
-          </app-widget-item> 
-        </ng-container> 
-      </div> 
-    </ng-container> 
-  </div> 
-</div> 
+<div class="widget-grid" [style.--grid-gap]="gridConfig.gap + 'px'">
+    <div class="widget-row" *ngFor="let row of getWidgetRows()">
+      <div class="widget-cell" 
+           *ngFor="let widget of row"
+           [style.--columns]="gridConfig.columns">
+        <app-widget-item 
+          [widget]="widget" 
+          (widgetClick)="onWidgetClick($event)">
+        </app-widget-item>
+      </div>
+    </div>
+  </div>
