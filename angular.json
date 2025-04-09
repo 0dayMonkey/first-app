@@ -3,36 +3,36 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "widget-dashboard": {
+    "first-app": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/first-app",
+      "sourceRoot": "projects/first-app/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/widget-dashboard",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "outputPath": "dist/first-app",
+            "index": "projects/first-app/src/index.html",
+            "browser": "projects/first-app/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "projects/first-app/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/first-app/public"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/first-app/src/styles.scss"
             ],
             "scripts": []
           },
@@ -64,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "widget-dashboard:build:production"
+              "buildTarget": "first-app:build:production"
             },
             "development": {
-              "buildTarget": "widget-dashboard:build:development"
+              "buildTarget": "first-app:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,18 +82,51 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "tsconfig.spec.json",
+            "tsConfig": "projects/first-app/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "projects/first-app/public"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "projects/first-app/src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "first-lib": {
+      "projectType": "library",
+      "root": "projects/first-lib",
+      "sourceRoot": "projects/first-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/first-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/first-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/first-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/first-lib/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

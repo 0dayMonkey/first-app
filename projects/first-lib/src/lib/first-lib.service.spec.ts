@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WidgetService } from './widget.service';
+import { FirstLibService } from './first-lib.service';
 
-describe('WidgetService', () => {
-  let service: WidgetService;
+describe('FirstLibService', () => {
+  let service: FirstLibService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(WidgetService);
+    service = TestBed.inject(FirstLibService);
   });
 
   it('should be created', () => {

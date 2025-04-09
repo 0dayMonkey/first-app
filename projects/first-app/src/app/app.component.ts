@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
+import { FirstLibComponent } from 'first-lib';
+
+
 
 @Component({
   selector: 'app-root',
+  imports: [FirstLibComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'widget-dashboard';
+  title = 'first-app';
 }
