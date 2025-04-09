@@ -1,0 +1,109 @@
+.widget-item { 
+  display: flex; 
+  flex-direction: column; 
+  border-radius: 12px; 
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  margin: 10px; 
+  width: 270px; 
+  height: 200px; 
+  cursor: pointer; 
+  position: relative; 
+Commande ECHO d‚sactiv‚e.
+  &:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+  } 
+Commande ECHO d‚sactiv‚e.
+  &:active { 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12); 
+  } 
+} 
+ 
+.widget-header { 
+  display: flex; 
+  align-items: center; 
+  padding: 12px; 
+  background-color: rgba(255, 255, 255, 0.9); 
+  z-index: 2; 
+} 
+ 
+.widget-icon { 
+  width: 24px; 
+  height: 24px; 
+  margin-right: 8px; 
+} 
+ 
+.widget-title { 
+  margin: 0; 
+  font-size: 16px; 
+  font-weight: 500; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+} 
+ 
+.widget-content { 
+  flex: 1; 
+  position: relative; 
+  overflow: hidden; 
+} 
+ 
+.widget-iframe { 
+  width: 100%%; 
+  height: 100%%; 
+  border: none; 
+Commande ECHO d‚sactiv‚e.
+  &.hidden { 
+    opacity: 0; 
+  } 
+} 
+ 
+.widget-loading, .widget-error { 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  background-color: rgba(255, 255, 255, 0.8); 
+} 
+ 
+.loading-spinner { 
+  width: 30px; 
+  height: 30px; 
+  border: 3px solid #f3f3f3; 
+  border-top: 3px solid #3498db; 
+  border-radius: 50%%; 
+  animation: spin 1s linear infinite; 
+  margin-bottom: 10px; 
+} 
+ 
+@keyframes spin { 
+  0%% { transform: rotate(0deg); } 
+  100%% { transform: rotate(360deg); } 
+} 
+ 
+.widget-error { 
+  color: #e74c3c; 
+} 
+ 
+.widget-footer { 
+  padding: 8px 12px; 
+  background-color: rgba(255, 255, 255, 0.9); 
+  z-index: 2; 
+} 
+ 
+.widget-description { 
+  margin: 0; 
+  font-size: 12px; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+  color: #666; 
+} 
