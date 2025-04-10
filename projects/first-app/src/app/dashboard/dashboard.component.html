@@ -1,0 +1,25 @@
+<div class="dashboard-container">
+    <div class="carousel-controls">
+      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <span class="page-indicator">{{ currentPage + 1 }} / {{ totalPages }}</span>
+      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+    
+    <div class="widgets-container">
+      <div *ngFor="let widget of visibleWidgets" class="widget-wrapper">
+        <mat-card class="widget-card">
+          <mat-card-header>
+            <mat-card-title>{{ widget.name }}</mat-card-title>
+            <mat-card-subtitle>Widget #{{ widget.id }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <iframe [src]="widget.url" class="widget-iframe"></iframe>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>

@@ -1,6 +1,3 @@
-/*
- * Public API Surface of first-lib
- */
-
+// projects/first-lib/src/public-api.ts
 export * from './lib/first-lib.service';
-export * from './lib/first-lib.component';
+export * from './lib/dashboard/dashboard.component';
