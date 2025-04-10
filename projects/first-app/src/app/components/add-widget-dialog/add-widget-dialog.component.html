@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Ajouter une nouvelle application</h2>
+<mat-dialog-content>
+  <div>
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>Nom</mat-label>
+      <input matInput [(ngModel)]="name" required>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>URL de l'application</mat-label>
+      <input matInput [(ngModel)]="appUrl" required>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>URL de l'icône (optionnel)</mat-label>
+      <input matInput [(ngModel)]="iconUrl">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">Annuler</button>
+  <button mat-raised-button color="primary" [disabled]="!isValid()" (click)="add()">Ajouter</button>
+</mat-dialog-actions>

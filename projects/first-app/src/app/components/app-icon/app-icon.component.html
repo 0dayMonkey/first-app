@@ -1,0 +1,9 @@
+<div class="icon-container">
+    <!-- si on a une url -->
+    <img *ngIf="iconUrl" [src]="iconUrl" class="icon-img" alt="App icon">
+    
+    <!-- premiere lettre sinon -->
+    <div *ngIf="!iconUrl" class="default-icon">
+      {{firstLetter}}
+    </div>
+  </div>

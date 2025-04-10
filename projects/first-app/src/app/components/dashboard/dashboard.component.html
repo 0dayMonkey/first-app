@@ -1,0 +1,52 @@
+<div class="dashboard-container" tabindex="0" 
+     (keydown)="onKeyDown($event)"
+     (touchstart)="onTouchStart($event)"
+     (touchmove)="onTouchMove($event)"
+     (touchend)="onTouchEnd()">
+  
+  <!-- fullscreen quand app ouverte -->
+  <div *ngIf="isFullscreen" class="fullscreen-container">
+    <button mat-icon-button class="close-button" (click)="closeFullscreen()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <iframe *ngIf="currentLandingUrl" [src]="currentLandingUrl" class="fullscreen-iframe"></iframe>
+  </div>
+  
+  <!-- vue normale -->
+  <div *ngIf="!isFullscreen" class="normal-view">
+    
+    <!-- bouton pour add -->
+    <button mat-fab color="primary" class="add-widget-btn" (click)="openAddWidgetDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+    
+    <!-- pts style iphone -->
+    <div class="page-dots">
+      <div *ngFor="let i of totalPagesArray" 
+           class="dot" 
+           [class.active]="currentPage === i"></div>
+    </div>
+    
+    <div class="widgets-container" [style.transform]="'translateX(' + slideTranslation + 'px)'">
+      <div *ngFor="let widget of widgets; let i = index" 
+           class="widget-wrapper" 
+           [class.hidden]="!isWidgetVisible(i)"
+           (click)="openApp(widget)"
+           (contextmenu)="showContextMenu($event, widget)">
+        <mat-card class="widget-card">
+          <!-- icon component -->
+          <app-icon [name]="widget.name" [iconUrl]="widget.iconUrl"></app-icon>
+          <mat-card-content>
+            <div class="widget-name">{{ widget.name }}</div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- menu qd click droit -->
+<div *ngIf="menuVisible && selectedWidget" class="widget-menu" [style.left.px]="menuX" [style.top.px]="menuY">
+  <button (click)="editWidget(selectedWidget)">Modifier</button>
+  <button (click)="deleteWidget(selectedWidget)">Supprimer</button>
+</div>
