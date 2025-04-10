@@ -1,25 +1,69 @@
-<div class="dashboard-container">
-    <div class="carousel-controls">
-      <button mat-icon-button (click)="prevPage()" [disabled]="currentPage === 0">
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-      <span class="page-indicator">{{ currentPage + 1 }} / {{ totalPages }}</span>
-      <button mat-icon-button (click)="nextPage()" [disabled]="currentPage === totalPages - 1">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
+<div class="dashboard-container" tabindex="0" 
+     (keydown)="onKeyDown($event)"
+     (touchstart)="onTouchStart($event)"
+     (touchmove)="onTouchMove($event)"
+     (touchend)="onTouchEnd()">
+  
+  <!-- mode fullscreen pour l'app ouverte -->
+  <div *ngIf="isFullscreen" class="fullscreen-container">
+    <button mat-icon-button class="close-button" (click)="closeFullscreen()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <iframe *ngIf="currentLandingUrl" [src]="currentLandingUrl" class="fullscreen-iframe"></iframe>
+  </div>
+  
+  <!-- mode dashboard normal -->
+  <div *ngIf="!isFullscreen" class="normal-view">
+    
+    <!-- indication si on est en mode edit -->
+    <div *ngIf="isInEditMode" class="edit-mode-indicator">
+      Mode édition: déplacez les applications - 
+      <button mat-button class="edit-done-btn" (click)="stopEditMode()">Terminer</button>
     </div>
     
-    <div class="widgets-container">
-      <div *ngFor="let widget of visibleWidgets" class="widget-wrapper">
+    <!-- indicateur de page style iphone (les points) -->
+    <div class="page-dots">
+      <div *ngFor="let i of totalPagesArray" 
+           class="dot" 
+           [class.active]="currentPage === i"></div>
+    </div>
+    
+    <div class="widgets-container" [style.transform]="'translateX(' + slideTranslation + 'px)'">
+      <div *ngFor="let widget of widgets; let i = index" 
+           class="widget-wrapper" 
+           [class.editing]="isEditing(widget)"
+           [class.hidden]="!isWidgetVisible(i)"
+           (mousedown)="onMouseDown($event, widget, i)"
+           (click)="openApp(widget)"
+           (dblclick)="startRename(widget)"
+           (contextmenu)="showContextMenu($event, widget)"
+           [style.transform]="getWidgetTransform(i)"
+           [style.transition]="getWidgetTransition(i)">
         <mat-card class="widget-card">
           <mat-card-header>
             <mat-card-title>{{ widget.name }}</mat-card-title>
-            <mat-card-subtitle>Widget #{{ widget.id }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <iframe [src]="widget.url" class="widget-iframe"></iframe>
+            <iframe [src]="widget.appUrl" class="widget-iframe"></iframe>
           </mat-card-content>
         </mat-card>
+        
+        <!-- input pour renommer -->
+        <input *ngIf="renamingWidget === widget" 
+               type="text" 
+               class="rename-input" 
+               [value]="widget.name"
+               (blur)="finishRename($event)"
+               (keydown.enter)="finishRename($event)"
+               #renameInput>
       </div>
     </div>
   </div>
+</div>
+
+<!-- menu contextuel qd on clique droit -->
+<div *ngIf="menuVisible && selectedWidget" class="widget-menu" [style.left.px]="menuX" [style.top.px]="menuY">
+  <button (click)="startRename(selectedWidget)">Renommer</button>
+  <button (click)="startEditMode(selectedWidget)">Modifier</button>
+  <button (click)="deleteWidget(selectedWidget)">Supprimer</button>
+</div>
