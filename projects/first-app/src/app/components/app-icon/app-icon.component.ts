@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class AppIconComponent {
   @Input() name: string = '';
   @Input() iconUrl?: string;
+  @Input() notificationCount?: number;
   
   // première lettre si pas d'icone
   get firstLetter(): string {

@@ -8,4 +8,5 @@ export interface Widget {
   landingUrl: SafeResourceUrl; // pour lapp
   position: number;
   iconUrl?: string; // optionel
+  notificationCount?: number; // nombre de notifications
 }

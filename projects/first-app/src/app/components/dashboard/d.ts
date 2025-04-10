@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragPlaceholder, CdkDrag, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 
 import { StorageService } from '../../services/storage.service';
 import { NotificationService } from '../../services/notification.service';
@@ -29,7 +30,11 @@ import { RenameDialogComponent } from '../rename-dialog/rename-dialog.component'
     AppIconComponent,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
+    CdkDragPlaceholder
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
@@ -39,7 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // trucs de base
   widgets: Widget[] = [];
   currentPage = 0;
-  widgetsPerPage = 9; // Augmenté pour afficher plus d'icônes par page
+  widgetsPerPage = 5; // 5 apps par page comme demandé
   
   // pour slider
   touchStartX = 0;
@@ -48,6 +53,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   containerWidth = 0;
   isAnimating = false;
   isDragging = false;
+  
+  // mode édition
+  editMode = false;
+  draggingWidgetId: number | null = null;
+  longPressTimeout: any = null;
   
   // menu quand click droit
   menuVisible = false;
@@ -138,14 +148,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           landingUrl: this.sanitizer.bypassSecurityTrustResourceUrl('https://www.reddit.com/new/'),
           position: 4,
           iconUrl: 'https://www.reddit.com/favicon.ico'
-        },
-        { 
-          id: 6, 
-          name: 'Instagram', 
-          appUrl: this.sanitizer.bypassSecurityTrustResourceUrl('https://www.instagram.com/explore/'),
-          landingUrl: this.sanitizer.bypassSecurityTrustResourceUrl('https://www.instagram.com/direct/inbox/'),
-          position: 5,
-          iconUrl: 'https://www.instagram.com/favicon.ico'
         }
       ];
       
@@ -165,6 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // nettoyage des subscriptions
     Object.values(this.notificationSubscriptions).forEach(sub => sub.unsubscribe());
     window.removeEventListener('resize', this.updateContainerWidth.bind(this));
+    this.clearLongPressTimeout();
   }
   
   private updateContainerWidth(): void {
@@ -176,6 +179,48 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const start = pageIndex * this.widgetsPerPage;
     const end = Math.min(start + this.widgetsPerPage, this.widgets.length);
     return this.widgets.slice(start, end);
+  }
+  
+  // Obtenir les IDs des listes connectées pour le drag & drop
+  getConnectedListIds(): string[] {
+    return this.totalPagesArray.map(index => `page-${index}`);
+  }
+  
+  // Gestion du drop pour drag & drop
+  onDrop(event: CdkDragDrop<Widget[]>, pageIndex: number): void {
+    if (!this.editMode) return;
+    
+    const widgetData = event.item.data as Widget;
+    
+    if (event.previousContainer === event.container) {
+      // Déplacement dans la même page
+      moveItemInArray(this.widgets, 
+                      this.getWidgetIndexInAllWidgets(widgetData.id), 
+                      pageIndex * this.widgetsPerPage + event.currentIndex);
+    } else {
+      // Déplacement vers une autre page
+      const previousIndex = this.getWidgetIndexInAllWidgets(widgetData.id);
+      const targetIndex = pageIndex * this.widgetsPerPage + event.currentIndex;
+      
+      // Déplacer dans le tableau global
+      this.widgets.splice(targetIndex, 0, this.widgets.splice(previousIndex, 1)[0]);
+    }
+    
+    // Mettre à jour les positions
+    this.updateWidgetPositions();
+    this.saveWidgets();
+  }
+  
+  // Obtenir l'index global d'un widget à partir de son ID
+  private getWidgetIndexInAllWidgets(widgetId: number): number {
+    return this.widgets.findIndex(w => w.id === widgetId);
+  }
+  
+  // Mettre à jour les positions de tous les widgets
+  private updateWidgetPositions(): void {
+    this.widgets.forEach((widget, index) => {
+      widget.position = index;
+    });
   }
   
   // Obtenir la valeur de transformation pour l'animation
@@ -223,11 +268,80 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
   
+  // Gestion de l'appui prolongé (mousedown)
+  onWidgetMouseDown(event: MouseEvent, widget: Widget): void {
+    if (this.editMode) return; // Déjà en mode édition
+    
+    this.clearLongPressTimeout();
+    
+    // Démarrer un timer pour l'appui prolongé (3 secondes)
+    this.longPressTimeout = setTimeout(() => {
+      this.startEditMode();
+      this.draggingWidgetId = widget.id;
+    }, 3000);
+    
+    // Annuler le timer si la souris est relâchée
+    const mouseUpHandler = () => {
+      this.clearLongPressTimeout();
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+    
+    document.addEventListener('mouseup', mouseUpHandler);
+  }
+  
+  // Gestion de l'appui prolongé (touchstart)
+  onWidgetTouchStart(event: TouchEvent, widget: Widget): void {
+    if (this.editMode) return; // Déjà en mode édition
+    
+    this.clearLongPressTimeout();
+    
+    // Démarrer un timer pour l'appui prolongé (3 secondes)
+    this.longPressTimeout = setTimeout(() => {
+      this.startEditMode();
+      this.draggingWidgetId = widget.id;
+    }, 3000);
+    
+    // Annuler le timer si le toucher est relâché
+    const touchEndHandler = () => {
+      this.clearLongPressTimeout();
+      document.removeEventListener('touchend', touchEndHandler);
+    };
+    
+    document.addEventListener('touchend', touchEndHandler);
+  }
+  
+  // Nettoyer le timeout d'appui prolongé
+  private clearLongPressTimeout(): void {
+    if (this.longPressTimeout) {
+      clearTimeout(this.longPressTimeout);
+      this.longPressTimeout = null;
+    }
+  }
+  
+  // Démarrer le mode édition
+  startEditMode(): void {
+    this.editMode = true;
+    this.hideContextMenu();
+  }
+  
+  // Quitter le mode édition
+  exitEditMode(): void {
+    this.editMode = false;
+    this.draggingWidgetId = null;
+  }
+  
   // keyboard
   onKeyDown(event: KeyboardEvent): void {
     if (this.isFullscreen) {
       if (event.key === 'Escape') {
         this.closeFullscreen();
+      }
+      return;
+    }
+    
+    if (this.editMode) {
+      if (event.key === 'Escape') {
+        this.exitEditMode();
       }
       return;
     }
@@ -239,9 +353,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
   
+  // Aller directement à une page spécifique
+  goToPage(pageIndex: number): void {
+    if (this.isFullscreen || this.isAnimating || pageIndex === this.currentPage) return;
+    
+    this.isAnimating = true;
+    this.currentPage = pageIndex;
+    this.slideTranslation = 0;
+    
+    setTimeout(() => {
+      this.isAnimating = false;
+    }, 300); // durée de l'animation
+  }
+  
   // Support pour la molette de la souris
   onMouseWheel(event: WheelEvent): void {
-    if (this.isFullscreen || this.isAnimating) return;
+    if (this.isFullscreen || this.isAnimating || this.editMode) return;
     
     // Pour éviter trop de sensibilité
     if (Math.abs(event.deltaX) > 30) {
@@ -255,7 +382,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   
   // touch events
   onTouchStart(event: TouchEvent): void {
-    if (this.isFullscreen || this.isAnimating) return;
+    if (this.isFullscreen || this.isAnimating || this.editMode) return;
     
     this.touchStartX = event.touches[0].clientX;
     this.isDragging = true;

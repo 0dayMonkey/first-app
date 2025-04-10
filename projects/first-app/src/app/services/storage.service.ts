@@ -8,8 +8,8 @@ interface WidgetStorage {
   landingUrlStr: string;
   position: number;
   iconUrl?: string;
+  // pas besoin de stocker les notifications, elles sont générées dynamiquement
 }
-
 @Injectable({
   providedIn: 'root'
 })
@@ -46,6 +46,7 @@ export class StorageService {
         landingUrlStr: w.landingUrl.toString(), 
         position: w.position,
         iconUrl: w.iconUrl
+        // pas besoin de sauvegarder notificationCount, c'est généré dynamiquement
       }));
       
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(w2save));

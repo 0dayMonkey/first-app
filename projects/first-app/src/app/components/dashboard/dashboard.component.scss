@@ -23,6 +23,26 @@
   position: relative; // pour btn add
 }
 
+// Mode édition
+.edit-mode-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(33, 33, 33, 0.9);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 950;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.edit-mode-text {
+  font-weight: 500;
+}
+
 // btn add en bas a droite
 .add-widget-btn {
   position: fixed;
@@ -75,6 +95,7 @@
     background-color: rgba(255, 255, 255, 0.3);
     margin: 0 5px;
     transition: all 0.3s ease;
+    cursor: pointer;
     
     &.active {
       background-color: white;
@@ -84,59 +105,141 @@
   }
 }
 
-// container des apps
+// Conteneur principal des pages
+.pages-container {
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+// container des widgets avec snap scroll
 .widgets-container {
   display: flex;
   width: 100%;
-  max-width: 500px; // c centré mieux
-  justify-content: space-around;
-  flex-wrap: wrap;
+  height: 100%;
+  position: relative;
+  will-change: transform;
+}
+
+// Chaque page de widgets
+.widgets-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  min-height: 200px;
-  transition: transform 0.3s ease; // pour swiper
+}
+
+// Container de drop pour chaque page
+.widgets-page-drop-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+  width: 100%;
+  min-height: 300px;
+  padding: 10px;
+  box-sizing: border-box;
+  
+  &.edit-mode {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+  }
 }
 
 // chaque app
 .widget-wrapper {
-  width: 100px;
-  margin: 0 15px 30px 15px;
+  width: 90px; // légèrement plus petit pour mieux s'adapter
+  height: 110px; // hauteur fixe pour uniformité
+  margin: 10px 15px;
   cursor: pointer;
   position: relative;
-  transition: opacity 0.3s ease;
+  transition: transform 0.2s, opacity 0.2s;
   
-  &.hidden {
-    opacity: 0;
-    pointer-events: none;
+  &:hover {
+    transform: scale(1.05);
   }
   
-  .widget-card {
-    width: 100%;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    overflow: hidden;
+  &.edit-mode {
+    animation: wiggle 0.5s infinite alternate;
+    z-index: 10;
     
     &:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 15px rgba(120, 70, 200, 0.3);
     }
+  }
+  
+  &.dragging {
+    opacity: 0.4;
   }
 }
 
-// nom de l'app
-.widget-name {
-  text-align: center;
-  margin-top: 10px;
+// Preview quand on drag
+.widget-preview {
+  width: 90px;
+  height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(33, 33, 33, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+// Placeholder quand on drag
+.widget-placeholder {
+  width: 90px;
+  height: 110px;
+  background-color: rgba(120, 70, 200, 0.2);
+  border: 2px dashed rgba(120, 70, 200, 0.5);
+  border-radius: 10px;
+}
+
+// Indicateur de suppression
+.delete-indicator {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #f44336;
   color: white;
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  
+  .mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+  
+  &:hover {
+    background-color: #d32f2f;
+    transform: scale(1.1);
+  }
+}
+
+// Animation de "wiggle" pour le mode édition
+@keyframes wiggle {
+  0% {
+    transform: rotate(-1deg);
+  }
+  100% {
+    transform: rotate(1deg);
+  }
 }
 
 // menu contextuel

@@ -2,7 +2,8 @@
      (keydown)="onKeyDown($event)"
      (touchstart)="onTouchStart($event)"
      (touchmove)="onTouchMove($event)"
-     (touchend)="onTouchEnd()">
+     (touchend)="onTouchEnd()"
+     (wheel)="onMouseWheel($event)">
   
   <!-- fullscreen quand app ouverte -->
   <div *ngIf="isFullscreen" class="fullscreen-container">
@@ -15,6 +16,12 @@
   <!-- vue normale -->
   <div *ngIf="!isFullscreen" class="normal-view">
     
+    <!-- Mode édition banner -->
+    <div *ngIf="editMode" class="edit-mode-banner">
+      <div class="edit-mode-text">Mode édition</div>
+      <button mat-button color="warn" (click)="exitEditMode()">Terminer</button>
+    </div>
+    
     <!-- bouton pour add -->
     <button mat-fab color="primary" class="add-widget-btn" (click)="openAddWidgetDialog()">
       <mat-icon>add</mat-icon>
@@ -24,22 +31,64 @@
     <div class="page-dots">
       <div *ngFor="let i of totalPagesArray" 
            class="dot" 
-           [class.active]="currentPage === i"></div>
+           [class.active]="currentPage === i"
+           (click)="goToPage(i)"></div>
     </div>
     
-    <div class="widgets-container" [style.transform]="'translateX(' + slideTranslation + 'px)'">
-      <div *ngFor="let widget of widgets; let i = index" 
-           class="widget-wrapper" 
-           [class.hidden]="!isWidgetVisible(i)"
-           (click)="openApp(widget)"
-           (contextmenu)="showContextMenu($event, widget)">
-        <mat-card class="widget-card">
-          <!-- icon component -->
-          <app-icon [name]="widget.name" [iconUrl]="widget.iconUrl"></app-icon>
-          <mat-card-content>
-            <div class="widget-name">{{ widget.name }}</div>
-          </mat-card-content>
-        </mat-card>
+    <!-- Container principal avec transition fluide -->
+    <div class="pages-container">
+      <div class="widgets-container" 
+           [style.transform]="'translateX(' + getTranslationValue() + 'px)'"
+           [style.transition]="isAnimating ? 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' : 'none'">
+        
+        <!-- Créer une div pour chaque page -->
+        <div *ngFor="let pageIndex of totalPagesArray" class="widgets-page">
+          <div cdkDropList
+               [cdkDropListData]="getWidgetsForPage(pageIndex)"
+               (cdkDropListDropped)="onDrop($event, pageIndex)"
+               [cdkDropListConnectedTo]="getConnectedListIds()"
+               [id]="'page-' + pageIndex"
+               [class.edit-mode]="editMode"
+               class="widgets-page-drop-container">
+               
+            <div *ngFor="let widget of getWidgetsForPage(pageIndex)" 
+                 class="widget-wrapper"
+                 [class.edit-mode]="editMode"
+                 [class.dragging]="draggingWidgetId === widget.id"
+                 (click)="editMode ? null : openApp(widget)"
+                 (contextmenu)="showContextMenu($event, widget)"
+                 (mousedown)="onWidgetMouseDown($event, widget)"
+                 (touchstart)="onWidgetTouchStart($event, widget)"
+                 cdkDrag
+                 [cdkDragDisabled]="!editMode"
+                 [cdkDragData]="widget">
+                 
+              <!-- Preview quand on drag -->
+              <div *cdkDragPreview class="widget-preview">
+                <app-icon 
+                  [name]="widget.name" 
+                  [iconUrl]="widget.iconUrl" 
+                  [notificationCount]="widget.notificationCount">
+                </app-icon>
+              </div>
+              
+              <!-- Placeholder quand on drag -->
+              <div *cdkDragPlaceholder class="widget-placeholder"></div>
+              
+              <!-- Icône de l'application -->
+              <app-icon 
+                [name]="widget.name" 
+                [iconUrl]="widget.iconUrl" 
+                [notificationCount]="editMode ? null : widget.notificationCount">
+              </app-icon>
+              
+              <!-- Indicateur de suppression en mode édition -->
+              <div *ngIf="editMode" class="delete-indicator" (click)="deleteWidget(widget)">
+                <mat-icon>close</mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -49,4 +98,5 @@
 <div *ngIf="menuVisible && selectedWidget" class="widget-menu" [style.left.px]="menuX" [style.top.px]="menuY">
   <button (click)="editWidget(selectedWidget)">Modifier</button>
   <button (click)="deleteWidget(selectedWidget)">Supprimer</button>
+  <button (click)="startEditMode()">Mode édition</button>
 </div>

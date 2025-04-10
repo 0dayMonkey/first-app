@@ -1,9 +1,22 @@
-<div class="icon-container">
-    <!-- si on a une url -->
-    <img *ngIf="iconUrl" [src]="iconUrl" class="icon-img" alt="App icon">
+<div class="app-container">
+    <!-- Container de l'icône -->
+    <div class="icon-container">
+      <!-- image si url fournie -->
+      <img *ngIf="iconUrl" [src]="iconUrl" class="icon-img" alt="App icon">
+      
+      <!-- première lettre sinon -->
+      <div *ngIf="!iconUrl" class="default-icon">
+        {{firstLetter}}
+      </div>
+      
+      <!-- badge de notification séparé -->
+      <div *ngIf="notificationCount && notificationCount > 0" class="notification-badge">
+        {{notificationCount}}
+      </div>
+    </div>
     
-    <!-- premiere lettre sinon -->
-    <div *ngIf="!iconUrl" class="default-icon">
-      {{firstLetter}}
+    <!-- Nom de l'application en dessous -->
+    <div class="app-name">
+      {{name}}
     </div>
   </div>
