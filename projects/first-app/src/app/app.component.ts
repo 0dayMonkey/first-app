@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
-import { FirstLibComponent } from 'first-lib';
-
-
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
-  imports: [FirstLibComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [DashboardComponent],
+  template: `<app-dashboard></app-dashboard>`,
+  styles: `
+    :host {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  `
 })
 export class AppComponent {
   title = 'first-app';
