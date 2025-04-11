@@ -14,6 +14,8 @@ import { filter } from 'rxjs/operators';
 })
 export class HeaderComponent implements OnInit {
   isLandingPage = false;
+  isMypromoPage = false;
+  pageTitle = 'Dashboard';
   
   constructor(
     private router: Router,
@@ -25,6 +27,16 @@ export class HeaderComponent implements OnInit {
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       this.isLandingPage = event.url.includes('/landingPage');
+      this.isMypromoPage = event.url.includes('/mypromo');
+      
+      // Déterminer le titre en fonction de la page
+      if (this.isLandingPage) {
+        this.pageTitle = 'Application';
+      } else if (this.isMypromoPage) {
+        this.pageTitle = 'Mypromo';
+      } else {
+        this.pageTitle = 'Dashboard';
+      }
     });
   }
 
@@ -32,9 +44,8 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
-
   goBack(): void {
-    if (this.isLandingPage) {
+    if (this.isLandingPage || this.isMypromoPage) {
       this.router.navigate(['/']);
     } else {
       this.location.back();

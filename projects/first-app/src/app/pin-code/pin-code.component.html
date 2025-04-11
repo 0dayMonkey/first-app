@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<div class="code-container">
+  <div class="code-header">
+    <h2>Entrez votre code voucher</h2>
+    <div class="message" [class.error]="showError">{{ message }}</div>
+  </div>
+  
+  <div class="code-input-container">
+    <mat-form-field appearance="outline" class="code-field">
+      <input 
+        matInput 
+        [(ngModel)]="voucherCode" 
+        placeholder="XX-XXXX-XXXX-XXXX-XXXX"
+        (input)="formatCode()"
+        maxlength="22"
+        autocapitalize="characters"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false">
+      <button *ngIf="voucherCode" matSuffix mat-icon-button (click)="clearCode()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+  
+  <div class="format-note">
+    Format: XX-XXXX-XXXX-XXXX-XXXX
+  </div>
+  
+  <div class="button-container">
+    <button 
+      mat-raised-button 
+      color="primary" 
+      class="validate-button" 
+      [disabled]="!voucherCode.match(validCodePattern)"
+      (click)="validateCode()">
+      Valider le code
+    </button>
+  </div>
+</div>

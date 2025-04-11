@@ -82,7 +82,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.pages = [];
     let currentPage: App[] = [];
     
-    apps.forEach(app => {
+    // Assurer que l'application Mypromo est en première position
+    const mypromoApp = apps.find(app => app.id === 'mypromo-app-id');
+    const otherApps = apps.filter(app => app.id !== 'mypromo-app-id');
+    
+    if (mypromoApp) {
+      currentPage.push(mypromoApp);
+    }
+    
+    otherApps.forEach(app => {
       if (currentPage.length >= this.PAGE_SIZE) {
         this.pages.push(currentPage);
         currentPage = [];
@@ -134,6 +142,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   updateNotificationBadges(notifications: { [key: string]: number }): void {
+    // S'assurer que les notifications sont appliquées à toutes les pages
     this.pages.forEach(page => {
       page.forEach(app => {
         if (app.id && notifications[app.id] !== undefined) {
@@ -205,12 +214,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   openApp(app: App): void {
-    this.router.navigate(['/landingPage'], { 
-      queryParams: { 
-        url: app.url,
-        name: app.name
-      }
-    });
+    // Vérifier si c'est une application locale (commence par /)
+    if (app.url && app.url.startsWith('/')) {
+      // Application locale, naviguer directement
+      this.router.navigateByUrl(app.url);
+    } else {
+      // Application externe, utiliser la page d'atterrissage
+      this.router.navigate(['/landingPage'], { 
+        queryParams: { 
+          url: app.url,
+          name: app.name
+        }
+      });
+    }
   }
 
   showAppContextMenu(event: MouseEvent, app: App, pageIndex: number, appIndex: number): void {

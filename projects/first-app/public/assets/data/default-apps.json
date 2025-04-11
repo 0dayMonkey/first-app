@@ -1,212 +1,219 @@
 [
-    {
-      "id": "1",
-      "name": "Google",
-      "url": "https://www.google.com",
-      "iconUrl": "https://www.google.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "2",
-      "name": "YouTube",
-      "url": "https://www.youtube.com",
-      "iconUrl": "https://www.youtube.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "3",
-      "name": "Facebook",
-      "url": "https://www.facebook.com",
-      "iconUrl": "https://www.facebook.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "4",
-      "name": "Twitter",
-      "url": "https://www.twitter.com",
-      "iconUrl": "https://www.twitter.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "5",
-      "name": "Instagram",
-      "url": "https://www.instagram.com",
-      "iconUrl": "https://www.instagram.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "6",
-      "name": "WhatsApp",
-      "url": "https://www.whatsapp.com",
-      "iconUrl": "https://www.whatsapp.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "7",
-      "name": "Snapchat",
-      "url": "https://www.snapchat.com",
-      "iconUrl": "https://www.snapchat.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "8",
-      "name": "LinkedIn",
-      "url": "https://www.linkedin.com",
-      "iconUrl": "https://www.linkedin.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "9",
-      "name": "Reddit",
-      "url": "https://www.reddit.com",
-      "iconUrl": "https://www.reddit.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "10",
-      "name": "TikTok",
-      "url": "https://www.tiktok.com",
-      "iconUrl": "https://www.tiktok.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "11",
-      "name": "Discord",
-      "url": "https://www.discord.com",
-      "iconUrl": "https://www.discord.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "12",
-      "name": "Spotify",
-      "url": "https://www.spotify.com",
-      "iconUrl": "https://www.spotify.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "13",
-      "name": "Netflix",
-      "url": "https://www.netflix.com",
-      "iconUrl": "https://www.netflix.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "14",
-      "name": "Steam",
-      "url": "https://www.steampowered.com",
-      "iconUrl": "https://www.steampowered.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "15",
-      "name": "Amazon",
-      "url": "https://www.amazon.com",
-      "iconUrl": "https://www.amazon.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "16",
-      "name": "Gmail",
-      "url": "https://mail.google.com",
-      "iconUrl": "https://mail.google.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "17",
-      "name": "Google Drive",
-      "url": "https://drive.google.com",
-      "iconUrl": "https://drive.google.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "18",
-      "name": "Dropbox",
-      "url": "https://www.dropbox.com",
-      "iconUrl": "https://www.dropbox.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "19",
-      "name": "OneDrive",
-      "url": "https://onedrive.live.com",
-      "iconUrl": "https://onedrive.live.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "20",
-      "name": "Evernote",
-      "url": "https://www.evernote.com",
-      "iconUrl": "https://www.evernote.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "21",
-      "name": "Zoom",
-      "url": "https://zoom.us",
-      "iconUrl": "https://zoom.us/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "22",
-      "name": "Microsoft Teams",
-      "url": "https://teams.microsoft.com",
-      "iconUrl": "https://teams.microsoft.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "23",
-      "name": "Slack",
-      "url": "https://slack.com",
-      "iconUrl": "https://slack.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "24",
-      "name": "Skype",
-      "url": "https://www.skype.com",
-      "iconUrl": "https://www.skype.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "25",
-      "name": "Trello",
-      "url": "https://trello.com",
-      "iconUrl": "https://trello.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "26",
-      "name": "Pinterest",
-      "url": "https://www.pinterest.com",
-      "iconUrl": "https://www.pinterest.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "27",
-      "name": "HBO Max",
-      "url": "https://www.hbomax.com",
-      "iconUrl": "https://www.hbomax.com/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "28",
-      "name": "Minecraft",
-      "url": "https://www.minecraft.net",
-      "iconUrl": "https://www.minecraft.net/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "29",
-      "name": "Fortnite",
-      "url": "https://www.epicgames.com/fortnite",
-      "iconUrl": "https://www.epicgames.com/fortnite/favicon.ico",
-      "notifications": 0
-    },
-    {
-      "id": "30",
-      "name": "Candy Crush",
-      "url": "https://www.king.com/game/candy-crush",
-      "iconUrl": "https://www.king.com/favicon.ico",
-      "notifications": 0
-    }
-  ]
+  {
+    "id": "mypromo-app-id",
+    "name": "Mypromo",
+    "url": "/mypromo",
+    "iconUrl": "/assets/icons/mypromo-icon.png",
+    "notifications": 0
+  },
+  {
+    "id": "2",
+    "name": "YouTube",
+    "url": "https://www.youtube.com",
+    "iconUrl": "https://www.youtube.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "1",
+    "name": "Google",
+    "url": "https://www.google.com",
+    "iconUrl": "https://www.google.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "3",
+    "name": "Facebook",
+    "url": "https://www.facebook.com",
+    "iconUrl": "https://www.facebook.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "4",
+    "name": "Twitter",
+    "url": "https://www.twitter.com",
+    "iconUrl": "https://www.twitter.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "5",
+    "name": "Instagram",
+    "url": "https://www.instagram.com",
+    "iconUrl": "https://www.instagram.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "6",
+    "name": "WhatsApp",
+    "url": "https://www.whatsapp.com",
+    "iconUrl": "https://www.whatsapp.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "7",
+    "name": "Snapchat",
+    "url": "https://www.snapchat.com",
+    "iconUrl": "https://www.snapchat.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "8",
+    "name": "LinkedIn",
+    "url": "https://www.linkedin.com",
+    "iconUrl": "https://www.linkedin.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "9",
+    "name": "Reddit",
+    "url": "https://www.reddit.com",
+    "iconUrl": "https://www.reddit.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "10",
+    "name": "TikTok",
+    "url": "https://www.tiktok.com",
+    "iconUrl": "https://www.tiktok.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "11",
+    "name": "Discord",
+    "url": "https://www.discord.com",
+    "iconUrl": "https://www.discord.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "12",
+    "name": "Spotify",
+    "url": "https://www.spotify.com",
+    "iconUrl": "https://www.spotify.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "13",
+    "name": "Netflix",
+    "url": "https://www.netflix.com",
+    "iconUrl": "https://www.netflix.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "14",
+    "name": "Steam",
+    "url": "https://www.steampowered.com",
+    "iconUrl": "https://www.steampowered.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "15",
+    "name": "Amazon",
+    "url": "https://www.amazon.com",
+    "iconUrl": "https://www.amazon.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "16",
+    "name": "Gmail",
+    "url": "https://mail.google.com",
+    "iconUrl": "https://mail.google.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "17",
+    "name": "Google Drive",
+    "url": "https://drive.google.com",
+    "iconUrl": "https://drive.google.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "18",
+    "name": "Dropbox",
+    "url": "https://www.dropbox.com",
+    "iconUrl": "https://www.dropbox.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "19",
+    "name": "OneDrive",
+    "url": "https://onedrive.live.com",
+    "iconUrl": "https://onedrive.live.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "20",
+    "name": "Evernote",
+    "url": "https://www.evernote.com",
+    "iconUrl": "https://www.evernote.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "21",
+    "name": "Zoom",
+    "url": "https://zoom.us",
+    "iconUrl": "https://zoom.us/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "22",
+    "name": "Microsoft Teams",
+    "url": "https://teams.microsoft.com",
+    "iconUrl": "https://teams.microsoft.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "23",
+    "name": "Slack",
+    "url": "https://slack.com",
+    "iconUrl": "https://slack.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "24",
+    "name": "Skype",
+    "url": "https://www.skype.com",
+    "iconUrl": "https://www.skype.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "25",
+    "name": "Trello",
+    "url": "https://trello.com",
+    "iconUrl": "https://trello.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "26",
+    "name": "Pinterest",
+    "url": "https://www.pinterest.com",
+    "iconUrl": "https://www.pinterest.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "27",
+    "name": "HBO Max",
+    "url": "https://www.hbomax.com",
+    "iconUrl": "https://www.hbomax.com/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "28",
+    "name": "Minecraft",
+    "url": "https://www.minecraft.net",
+    "iconUrl": "https://www.minecraft.net/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "29",
+    "name": "Fortnite",
+    "url": "https://www.epicgames.com/fortnite",
+    "iconUrl": "https://www.epicgames.com/fortnite/favicon.ico",
+    "notifications": 0
+  },
+  {
+    "id": "30",
+    "name": "Candy Crush",
+    "url": "https://www.king.com/game/candy-crush",
+    "iconUrl": "https://www.king.com/favicon.ico",
+    "notifications": 0
+  }
+]
