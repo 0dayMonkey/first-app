@@ -57,8 +57,6 @@
                  [class.dragging]="draggingWidgetId === widget.id"
                  (click)="editMode ? null : openApp(widget)"
                  (contextmenu)="showContextMenu($event, widget)"
-                 (mousedown)="onWidgetMouseDown($event, widget)"
-                 (touchstart)="onWidgetTouchStart($event, widget)"
                  cdkDrag
                  [cdkDragDisabled]="!editMode"
                  [cdkDragData]="widget">
@@ -68,7 +66,7 @@
                 <app-icon 
                   [name]="widget.name" 
                   [iconUrl]="widget.iconUrl" 
-                  [notificationCount]="widget.notificationCount">
+                  [notificationCount]="0">
                 </app-icon>
               </div>
               
@@ -79,7 +77,7 @@
               <app-icon 
                 [name]="widget.name" 
                 [iconUrl]="widget.iconUrl" 
-                [notificationCount]="editMode ? null : widget.notificationCount">
+                [notificationCount]="editMode ? 0 : widget.notificationCount">
               </app-icon>
               
               <!-- Indicateur de suppression en mode édition -->
@@ -98,5 +96,6 @@
 <div *ngIf="menuVisible && selectedWidget" class="widget-menu" [style.left.px]="menuX" [style.top.px]="menuY">
   <button (click)="editWidget(selectedWidget)">Modifier</button>
   <button (click)="deleteWidget(selectedWidget)">Supprimer</button>
+  <button (click)="moveWidget(selectedWidget)">Déplacer</button>
   <button (click)="startEditMode()">Mode édition</button>
 </div>
