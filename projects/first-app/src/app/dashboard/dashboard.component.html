@@ -1,13 +1,11 @@
 <app-header></app-header>
 
-<!-- Menu contextuel mis à jour -->
 <div class="context-menu" *ngIf="showContextMenu" [style.left.px]="contextMenuPosition.x" [style.top.px]="contextMenuPosition.y">
   <div class="menu-item" (click)="editApp()">Modifier</div>
   <div class="menu-item" (click)="deleteApp()">Supprimer</div>
   <div class="menu-item" (click)="enterEditMode()">Déplacer</div>
 </div>
 
-<!-- Reste du composant dashboard -->
 <div class="dashboard-container" (contextmenu)="$event.preventDefault()" [class.edit-mode]="editMode">
   <div class="pages-container" [style.transform]="'translateX(' + (-currentPage * 100) + '%)'">
     <div class="page" *ngFor="let page of pages; let i = index" [attr.data-page-index]="i" 
@@ -15,7 +13,8 @@
          [cdkDropListData]="page"
          [cdkDropListConnectedTo]="getConnectedListIds()"
          (cdkDropListDropped)="drop($event)"
-         [id]="'page-' + i">
+         [id]="'page-' + i"
+         cdkDropListOrientation="horizontal">
       <div class="app-grid">
         <div *ngFor="let app of page; let appIndex = index" 
              class="app-item" 
@@ -35,9 +34,11 @@
             <div class="app-name">{{ app.name }}</div>
           </div>
         </div>
-        <div class="app-item add-app" (click)="openAddAppDialog(i)" *ngIf="!editMode">
+      </div>
+      
+      <div class="add-button-container" *ngIf="!editMode">
+        <div class="add-button" (click)="openAddAppDialog(i)">
           <div class="add-icon">+</div>
-          <div class="app-name">Ajouter</div>
         </div>
       </div>
     </div>

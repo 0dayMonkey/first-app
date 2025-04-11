@@ -30,18 +30,17 @@ import { App } from '../models/app.model';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  pages: App[][] = [[]]; // Tableaux multidimensionnels pour les pages d'applications
-  currentPage = 0; // Page actuelle
-  editMode = false; // Mode d'édition
+  pages: App[][] = [[]];
+  currentPage = 0;
+  editMode = false;
   
-  // Variables pour le menu contextuel
   showContextMenu = false;
   contextMenuPosition = { x: 0, y: 0 };
   selectedApp: App | null = null;
   selectedAppIndices: { pageIndex: number, appIndex: number } = { pageIndex: 0, appIndex: 0 };
   
   private notificationSubscription: Subscription | null = null;
-  private readonly PAGE_SIZE = 20; // Nombre maximal d'applications par page
+  private readonly PAGE_SIZE = 5;
   
   constructor(
     private dialog: MatDialog,
@@ -53,46 +52,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.resetAppStorage();
-    // Charger les applications depuis le service de stockage
     this.loadApps();
     
-    // S'abonner aux mises à jour de notifications
     this.notificationSubscription = this.notificationService.getNotifications().subscribe((notifications: { [key: string]: number }) => {
       if (!this.editMode) {
-        // Mettre à jour les badges de notification pour chaque application
         this.updateNotificationBadges(notifications);
       }
     });
     
-    // Initialiser le système de balayage tactile
     this.initSwipeDetection();
   }
 
   ngOnDestroy(): void {
-    // Nettoyer les abonnements pour éviter les fuites de mémoire
     if (this.notificationSubscription) {
       this.notificationSubscription.unsubscribe();
     }
   }
 
-  /**
-   * Charger les applications depuis le service de stockage
-   */
   loadApps(): void {
     const apps = this.storageService.getApps();
     if (apps.length === 0) {
-      // Initialiser avec des applications par défaut si aucune n'est trouvée
       this.initializeDefaultApps();
     } else {
       this.organizeAppsIntoPages(apps);
     }
   }
 
-  /**
-   * Organiser les applications en pages
-   * @param apps Liste complète des applications
-   */
   organizeAppsIntoPages(apps: App[]): void {
     this.pages = [];
     let currentPage: App[] = [];
@@ -109,15 +94,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.pages.push(currentPage);
     }
     
-    // S'assurer qu'il y a au moins une page
     if (this.pages.length === 0) {
       this.pages.push([]);
     }
   }
 
-  /**
-   * Initialiser avec des applications par défaut depuis le fichier JSON
-   */
   initializeDefaultApps(): void {
     this.appDataService.getDefaultApps().subscribe(defaultApps => {
       if (defaultApps.length > 0) {
@@ -148,17 +129,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   resetAppStorage(): void {
-    // Effacer le stockage
     this.storageService.clearApps();
-    // Recharger les applications par défaut
     this.initializeDefaultApps();
   }
 
-
-  /**
-   * Mettre à jour les badges de notification
-   * @param notifications Objet contenant les notifications pour chaque application
-   */
   updateNotificationBadges(notifications: { [key: string]: number }): void {
     this.pages.forEach(page => {
       page.forEach(app => {
@@ -169,9 +143,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Initialiser la détection de balayage tactile pour la navigation
-   */
   initSwipeDetection(): void {
     let touchStartX = 0;
     const container = document.querySelector('.dashboard-container');
@@ -185,13 +156,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const touchEndX = e.changedTouches[0].clientX;
         const diff = touchStartX - touchEndX;
         
-        if (Math.abs(diff) > 50) { // Seuil de détection du balayage
+        if (Math.abs(diff) > 50) {
           this.zone.run(() => {
             if (diff > 0 && this.currentPage < this.pages.length - 1) {
-              // Balayage vers la gauche (page suivante)
               this.goToPage(this.currentPage + 1);
             } else if (diff < 0 && this.currentPage > 0) {
-              // Balayage vers la droite (page précédente)
               this.goToPage(this.currentPage - 1);
             }
           });
@@ -200,13 +169,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Gestionnaire d'événements pour les touches du clavier
-   * @param event Événement clavier
-   */
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    if (this.editMode) return; // Ignorer en mode édition
+    if (this.editMode) return;
     
     switch (event.key) {
       case 'ArrowLeft':
@@ -222,39 +187,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Gestionnaire d'événements pour la molette de la souris
-   * @param event Événement de la molette
-   */
   @HostListener('wheel', ['$event'])
   handleWheel(event: WheelEvent): void {
-    if (this.editMode) return; // Ignorer en mode édition
+    if (this.editMode) return;
     
     if (event.deltaX > 50 && this.currentPage < this.pages.length - 1) {
-      // Défilement vers la droite (page suivante)
       this.goToPage(this.currentPage + 1);
     } else if (event.deltaX < -50 && this.currentPage > 0) {
-      // Défilement vers la gauche (page précédente)
       this.goToPage(this.currentPage - 1);
     }
   }
 
-  /**
-   * Naviguer vers une page spécifique
-   * @param pageIndex Index de la page cible
-   */
   goToPage(pageIndex: number): void {
     if (pageIndex >= 0 && pageIndex < this.pages.length) {
       this.currentPage = pageIndex;
     }
   }
 
-  /**
-   * Ouvrir une application
-   * @param app L'application à ouvrir
-   */
   openApp(app: App): void {
-    // Naviguer vers la page d'atterrissage avec les paramètres de l'application
     this.router.navigate(['/landingPage'], { 
       queryParams: { 
         url: app.url,
@@ -263,13 +213,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Afficher le menu contextuel pour une application
-   * @param event Événement de clic droit
-   * @param app L'application sélectionnée
-   * @param pageIndex Index de la page
-   * @param appIndex Index de l'application dans la page
-   */
   showAppContextMenu(event: MouseEvent, app: App, pageIndex: number, appIndex: number): void {
     event.preventDefault();
     this.selectedApp = app;
@@ -277,22 +220,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.contextMenuPosition = { x: event.clientX, y: event.clientY };
     this.showContextMenu = true;
     
-    // Masquer le menu contextuel lors d'un clic n'importe où
     setTimeout(() => {
       document.addEventListener('click', this.hideContextMenu.bind(this), { once: true });
     });
   }
 
-  /**
-   * Masquer le menu contextuel
-   */
   hideContextMenu(): void {
     this.showContextMenu = false;
   }
 
-  /**
-   * Modifier une application
-   */
   editApp(): void {
     this.hideContextMenu();
     
@@ -305,21 +241,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Mettre à jour l'application avec les nouvelles valeurs
         const pageIndex = this.selectedAppIndices.pageIndex;
         const appIndex = this.selectedAppIndices.appIndex;
         
         this.pages[pageIndex][appIndex] = result;
         
-        // Sauvegarder les modifications
         this.saveApps();
       }
     });
   }
 
-  /**
-   * Supprimer une application
-   */
   deleteApp(): void {
     this.hideContextMenu();
     
@@ -330,7 +261,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     this.pages[pageIndex].splice(appIndex, 1);
     
-    // Supprimer la page si elle est vide et ce n'est pas la dernière page
     if (this.pages[pageIndex].length === 0 && this.pages.length > 1) {
       this.pages.splice(pageIndex, 1);
       if (this.currentPage >= this.pages.length) {
@@ -338,19 +268,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     }
     
-    // Sauvegarder les modifications
     this.saveApps();
   }
 
-  /**
-   * Supprimer une application en mode édition
-   * @param pageIndex Index de la page
-   * @param appIndex Index de l'application
-   */
   deleteAppInEditMode(pageIndex: number, appIndex: number): void {
     this.pages[pageIndex].splice(appIndex, 1);
     
-    // Supprimer la page si elle est vide et ce n'est pas la dernière page
     if (this.pages[pageIndex].length === 0 && this.pages.length > 1) {
       this.pages.splice(pageIndex, 1);
       if (this.currentPage >= this.pages.length) {
@@ -358,88 +281,96 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     }
     
-    // Sauvegarder les modifications
     this.saveApps();
   }
 
-  /**
-   * Entrer en mode édition
-   */
   enterEditMode(): void {
     this.hideContextMenu();
     this.editMode = true;
   }
 
-  /**
-   * Sortir du mode édition
-   */
   exitEditMode(): void {
     this.editMode = false;
     this.saveApps();
   }
 
-  /**
-   * Ouvrir le dialogue d'ajout d'application
-   * @param pageIndex Index de la page cible
-   */
   openAddAppDialog(pageIndex: number): void {
-    const dialogRef = this.dialog.open(AddWidgetDialogComponent, {
-      width: '400px'
-    });
-    
-    dialogRef.afterClosed().subscribe((app: App | undefined) => {
-      if (app) {
-        // Générer un ID unique pour la nouvelle application
-        app.id = Date.now().toString();
-        app.notifications = 0;
-        
-        // Ajouter l'application à la page spécifiée
-        this.pages[pageIndex].push(app);
-        
-        // Sauvegarder les modifications
-        this.saveApps();
-      }
-    });
+    if (this.pages[pageIndex].length >= this.PAGE_SIZE) {
+      const dialogRef = this.dialog.open(AddWidgetDialogComponent, {
+        width: '400px'
+      });
+      
+      dialogRef.afterClosed().subscribe((app: App | undefined) => {
+        if (app) {
+          app.id = Date.now().toString();
+          app.notifications = 0;
+          
+          let targetPageIndex = pageIndex;
+          
+          // Cherche une page qui a de l'espace
+          for (let i = 0; i < this.pages.length; i++) {
+            if (this.pages[i].length < this.PAGE_SIZE) {
+              targetPageIndex = i;
+              break;
+            }
+          }
+          
+          // Si aucune page n'a d'espace, crée une nouvelle page
+          if (this.pages[targetPageIndex].length >= this.PAGE_SIZE) {
+            this.pages.push([]);
+            targetPageIndex = this.pages.length - 1;
+          }
+          
+          this.pages[targetPageIndex].push(app);
+          this.goToPage(targetPageIndex);
+          
+          this.saveApps();
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(AddWidgetDialogComponent, {
+        width: '400px'
+      });
+      
+      dialogRef.afterClosed().subscribe((app: App | undefined) => {
+        if (app) {
+          app.id = Date.now().toString();
+          app.notifications = 0;
+          
+          this.pages[pageIndex].push(app);
+          
+          this.saveApps();
+        }
+      });
+    }
   }
 
-  /**
-   * Gestionnaire d'événements pour le glisser-déposer
-   * @param event Événement de drop
-   */
   drop(event: CdkDragDrop<App[]>): void {
     if (event.previousContainer === event.container) {
-      // Déplacement dans la même page
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
     } else {
-      // Déplacement entre pages différentes
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+      if (event.container.data.length < this.PAGE_SIZE) {
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        );
+      }
     }
     
-    // Sauvegarder les modifications
     this.saveApps();
   }
 
-  /**
-   * Obtenir les IDs des listes connectées pour le drag and drop
-   */
   getConnectedListIds(): string[] {
     return this.pages.map((_, i) => `page-${i}`);
   }
 
-  /**
-   * Sauvegarder toutes les applications
-   */
   saveApps(): void {
-    // Aplatir le tableau multidimensionnel pour obtenir une liste unique
     const allApps: App[] = [];
     this.pages.forEach(page => {
       page.forEach(app => {
@@ -447,7 +378,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     });
     
-    // Sauvegarder dans le service de stockage
     this.storageService.saveApps(allApps);
   }
 }
