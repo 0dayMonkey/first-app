@@ -87,11 +87,16 @@
             "tsConfig": "projects/first-app/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/first-app/public"
-              }
-            ],
+  {
+    "glob": "**/*",
+    "input": "projects/first-app/public"
+  },
+  {
+    "glob": "**/*",
+    "input": "projects/first-app/src/assets",
+    "output": "assets"
+  }
+],
             "styles": [
               "projects/first-app/src/styles.scss"
             ],

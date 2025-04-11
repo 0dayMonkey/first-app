@@ -4,7 +4,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AddWidgetDialogComponent } from '../add-widget-dialog/add-widget-dialog.component';
 import { EditAppDialogComponent } from '../edit-app-dialog/edit-app-dialog.component';
@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.resetAppStorage();
     // Charger les applications depuis le service de stockage
     this.loadApps();
     
@@ -123,7 +124,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.storageService.saveApps(defaultApps);
         this.organizeAppsIntoPages(defaultApps);
       } else {
-        // Fallback si le fichier JSON n'est pas disponible
         const fallbackApps: App[] = [
           {
             id: '1',
@@ -146,6 +146,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  resetAppStorage(): void {
+    // Effacer le stockage
+    this.storageService.clearApps();
+    // Recharger les applications par défaut
+    this.initializeDefaultApps();
+  }
+
 
   /**
    * Mettre à jour les badges de notification

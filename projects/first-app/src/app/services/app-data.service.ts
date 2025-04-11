@@ -26,16 +26,12 @@ export class AppDataService {
       );
   }
   
-  /**
-   * Gère les erreurs de requête HTTP
-   * @param operation - Nom de l'opération qui a échoué
-   * @param result - Valeur optionnelle à retourner comme résultat observable
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
+private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(`${operation} a échoué: ${error.message}`);
+      console.error('Erreur complète:', error);  // Log complet
+      console.error('URL demandée:', error.url); // URL qui a échoué
       
-      // Si aucune donnée n'est disponible, on retourne un tableau vide
       return of(result as T);
     };
   }
