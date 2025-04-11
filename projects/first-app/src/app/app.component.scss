@@ -1,0 +1,14 @@
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .app-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #121212;
+  }

@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Modifier l'application</h2>
+
+<mat-dialog-content>
+  <div class="form-fields">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nom de l'application</mat-label>
+      <input matInput [(ngModel)]="editedApp.name" required>
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>URL de l'application</mat-label>
+      <input matInput [(ngModel)]="editedApp.url" required placeholder="https://example.com">
+    </mat-form-field>
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>URL de l'icône (optionnel)</mat-label>
+      <input matInput [(ngModel)]="editedApp.iconUrl" placeholder="https://example.com/icon.png">
+      <mat-hint>Laissez vide pour utiliser l'icône par défaut</mat-hint>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary" [disabled]="!editedApp.name || !editedApp.url" (click)="onSave()">Enregistrer</button>
+</mat-dialog-actions>

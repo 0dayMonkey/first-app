@@ -1,65 +1,78 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { BehaviorSubject, Observable, interval, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface NotificationState {
-  [widgetId: number]: number;
-}
-
+/**
+ * Service de gestion des notifications pour les applications
+ */
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationService {
-  private notificationsState = new BehaviorSubject<NotificationState>({});
+export class NotificationService implements OnDestroy {
+  private notificationsSubject = new BehaviorSubject<{ [key: string]: number }>({});
+  private updateInterval: Subscription;
   
   constructor() {
-  }
-  
-  startNotificationUpdates(widgetIds: number[]): void {
-    const initialState: NotificationState = {};
-    widgetIds.forEach(id => {
-      initialState[id] = this.getRandomNotificationCount();
+    // Mise à jour périodique des notifications toutes les 5 secondes
+    this.updateInterval = interval(5000).subscribe(() => {
+      this.updateRandomNotifications();
     });
     
-    this.notificationsState.next(initialState);
-    
-    interval(5000).subscribe(() => {
-      const currentState = {...this.notificationsState.value};
-      
-      widgetIds.forEach(id => {
-        currentState[id] = this.getRandomNotificationCount();
-      });
-      
-      this.notificationsState.next(currentState);
-    });
+    // Initialisation avec des valeurs par défaut
+    this.updateRandomNotifications();
   }
   
-  getNotificationsForWidget(widgetId: number): Observable<number> {
-    return this.notificationsState.pipe(
-      map(state => state[widgetId] || 0)
-    );
-  }
-  
-  addWidgetNotification(widgetId: number): void {
-    const currentState = {...this.notificationsState.value};
-    currentState[widgetId] = this.getRandomNotificationCount();
-    this.notificationsState.next(currentState);
-  }
-  
-  removeWidgetNotification(widgetId: number): void {
-    const currentState = {...this.notificationsState.value};
-    if (currentState[widgetId] !== undefined) {
-      delete currentState[widgetId];
-      this.notificationsState.next(currentState);
+  ngOnDestroy(): void {
+    if (this.updateInterval) {
+      this.updateInterval.unsubscribe();
     }
   }
   
-  private getRandomNotificationCount(): number {
-    const random = Math.random();
-    if (random < 0.3) {
-      return 0; 
-    } else {
-      return Math.floor(Math.random() * 9) + 1;
-    }
+  /**
+   * Récupère le flux d'observables des notifications
+   */
+  getNotifications(): Observable<{ [key: string]: number }> {
+    return this.notificationsSubject.asObservable();
+  }
+  
+  /**
+   * Met à jour les notifications pour une application spécifique
+   * @param appId Identifiant de l'application
+   * @param count Nombre de notifications
+   */
+  setNotification(appId: string, count: number): void {
+    const currentNotifications = this.notificationsSubject.value;
+    this.notificationsSubject.next({
+      ...currentNotifications,
+      [appId]: count
+    });
+  }
+  
+  /**
+   * Réinitialise les notifications pour une application spécifique
+   * @param appId Identifiant de l'application
+   */
+  clearNotification(appId: string): void {
+    this.setNotification(appId, 0);
+  }
+  
+  /**
+   * Génère des notifications aléatoires pour simuler l'activité
+   */
+  private updateRandomNotifications(): void {
+    const currentNotifications = { ...this.notificationsSubject.value };
+    
+    // Pour chaque application existante, mettre à jour aléatoirement
+    Object.keys(currentNotifications).forEach(appId => {
+      // 30% de chance d'augmenter le nombre de notifications
+      if (Math.random() < 0.3) {
+        currentNotifications[appId] = Math.min(
+          (currentNotifications[appId] || 0) + Math.floor(Math.random() * 3) + 1,
+          99
+        );
+      }
+    });
+    
+    this.notificationsSubject.next(currentNotifications);
   }
 }

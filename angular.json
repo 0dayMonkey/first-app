@@ -32,9 +32,11 @@
               }
             ],
             "styles": [
-              "projects/first-app/src/styles.scss"
+              "projects/first-app/src/styles.scss"              
             ],
-            "scripts": []
+            "scripts": [
+
+            ]
           },
           "configurations": {
             "production": {

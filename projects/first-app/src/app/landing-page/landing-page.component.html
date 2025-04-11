@@ -1,0 +1,21 @@
+<app-header></app-header>
+
+<div class="landing-page-container">
+  <div class="loading-indicator" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Chargement de l'application...</p>
+  </div>
+  
+  <iframe 
+    *ngIf="appUrl" 
+    [src]="appUrl" 
+    class="app-iframe"
+    (load)="onIframeLoad()"
+    frameborder="0" 
+    allowfullscreen>
+  </iframe>
+  
+  <div class="error-message" *ngIf="!appUrl && !loading">
+    <p>Impossible de charger l'application. URL invalide.</p>
+  </div>
+</div>

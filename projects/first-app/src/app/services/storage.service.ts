@@ -1,57 +1,49 @@
 import { Injectable } from '@angular/core';
+import { App } from '../models/app.model';
 
-// truc pour stocker
-interface WidgetStorage {
-  id: number;
-  name: string;
-  appUrlStr: string; // obligé de stocker en string
-  landingUrlStr: string;
-  position: number;
-  iconUrl?: string;
-  // pas besoin de stocker les notifications, elles sont générées dynamiquement
-}
+/**
+ * Service de gestion du stockage local des applications
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
+  private readonly STORAGE_KEY = 'dashboard_apps';
   
-  private STORAGE_KEY = 'dashboard_widgets';
+  constructor() {}
   
-  constructor() { }
-  
-  // récup les trucs
-  getWidgets(): WidgetStorage[] {
-    const data = localStorage.getItem(this.STORAGE_KEY);
-    
-    if (!data) {
-      return []; // vide
+  /**
+   * Récupère la liste des applications depuis le stockage local
+   */
+  getApps(): App[] {
+    const storedApps = localStorage.getItem(this.STORAGE_KEY);
+    if (storedApps) {
+      try {
+        return JSON.parse(storedApps);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des applications:', error);
+        return [];
+      }
     }
-    
+    return [];
+  }
+  
+  /**
+   * Sauvegarde la liste des applications dans le stockage local
+   * @param apps Liste des applications à sauvegarder
+   */
+  saveApps(apps: App[]): void {
     try {
-      return JSON.parse(data);
-    } catch (e) {
-      console.error('oups pb localStorage:', e);
-      return [];
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(apps));
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde des applications:', error);
     }
   }
   
-  // save des widgets
-  saveWidgets(widgets: any[]): void {
-    try {
-      // safeurl marche pas faut convertir
-      const w2save = widgets.map(w => ({
-        id: w.id,
-        name: w.name,
-        appUrlStr: w.appUrl.toString(),
-        landingUrlStr: w.landingUrl.toString(), 
-        position: w.position,
-        iconUrl: w.iconUrl
-        // pas besoin de sauvegarder notificationCount, c'est généré dynamiquement
-      }));
-      
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(w2save));
-    } catch (e) {
-      console.error('pb save:', e);
-    }
+  /**
+   * Supprime toutes les applications du stockage local
+   */
+  clearApps(): void {
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 }

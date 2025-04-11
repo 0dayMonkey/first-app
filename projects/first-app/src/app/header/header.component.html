@@ -1,0 +1,9 @@
+<header class="app-header">
+    <button mat-icon-button class="back-button" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="title">{{ isLandingPage ? 'Application' : 'Dashboard' }}</h1>
+    <button mat-icon-button class="home-button" (click)="goHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+  </header>
