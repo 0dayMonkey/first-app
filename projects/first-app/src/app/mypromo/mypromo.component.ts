@@ -29,6 +29,7 @@ export class MypromoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // S'abonner aux mises à jour des promotions
     this.promoService.getPromos().subscribe(promos => {
       this.promos = promos;
     });
@@ -48,9 +49,8 @@ export class MypromoComponent implements OnInit {
     return 'gift-icon';
   }
 
-  /**
-   * Retourne l'icône en fonction du type de promotion
-   */
+
+
   getPromoIcon(promo: Promo): string {
     if (promo.title.toLowerCase().includes('vendredi')) {
       return 'event';
@@ -79,10 +79,7 @@ export class MypromoComponent implements OnInit {
   /**
    * Valide la promotion sélectionnée
    */
-/**
-   * Valide la promotion sélectionnée
-   */
-validatePromo(promo: Promo, event: Event): void {
+  validatePromo(promo: Promo, event: Event): void {
     event.stopPropagation(); // Empêche le déclenchement du onPromoClick
     this.router.navigate(['/promo-result'], { 
       queryParams: { 

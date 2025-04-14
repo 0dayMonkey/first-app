@@ -61,7 +61,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     
     this.initSwipeDetection();
+    
+    // S'assurer que les notifications sont à jour
+    this.refreshAllNotifications();
   }
+
+   /**
+   * Force le rafraîchissement de toutes les notifications
+   */
+   refreshAllNotifications(): void {
+    // Délai de 300ms pour s'assurer que tout est bien initialisé
+    setTimeout(() => {
+      const promoApp = this.storageService.getApps().find(app => app.id === 'mypromo-app-id');
+      if (promoApp) {
+        // Récupérer les dernières notifications
+        const notifications = this.notificationService.getNotificationsValue();
+        this.updateNotificationBadges(notifications);
+      }
+    }, 300);
+  } 
+
 
   ngOnDestroy(): void {
     if (this.notificationSubscription) {

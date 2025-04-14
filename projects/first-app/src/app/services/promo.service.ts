@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Promo } from '../models/promo.model';
 import { StorageService } from './storage.service';
@@ -10,7 +10,7 @@ import { NotificationService } from './notification.service';
 @Injectable({
   providedIn: 'root'
 })
-export class PromoService {
+export class PromoService implements OnInit {
   private promos: Promo[] = [];
   private promosSubject = new BehaviorSubject<Promo[]>([]);
   private readonly PROMO_APP_ID = 'mypromo-app-id';
@@ -28,6 +28,11 @@ export class PromoService {
     }
     
     // Mettre à jour les notifications pour correspondre au nombre de promos
+    this.updateNotificationsBasedOnPromos();
+  }
+  
+  ngOnInit(): void {
+    // S'assurer que les notifications sont mises à jour dès le démarrage
     this.updateNotificationsBasedOnPromos();
   }
   
@@ -137,5 +142,14 @@ export class PromoService {
     } catch (error) {
       console.error('Erreur lors de la sauvegarde des promotions:', error);
     }
+  }
+  
+  /**
+   * Génère un nombre aléatoire de notifications pour l'application Mypromo
+   * @deprecated Utiliser updateNotificationsBasedOnPromos() à la place
+   */
+  generateRandomPromoNotifications(): void {
+    // Cette méthode est conservée pour compatibilité, mais n'est plus utilisée
+    this.updateNotificationsBasedOnPromos();
   }
 }
