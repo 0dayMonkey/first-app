@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
@@ -13,20 +10,15 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
+    FormsModule,
     MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    FormsModule
+    HeaderComponent
   ],
   templateUrl: './pin-code.component.html',
   styleUrls: ['./pin-code.component.scss']
 })
 export class PinCodeComponent {
   voucherCode: string = '';
-  message: string = '';
-  showError: boolean = false;
   
   // Format attendu: xx-xxxx-xxxx-xxxx-xxxx
   readonly validCodePattern = /^\w{2}-\w{4}-\w{4}-\w{4}-\w{4}$/;
@@ -38,29 +30,52 @@ export class PinCodeComponent {
    */
   validateCode(): void {
     if (this.voucherCode.match(this.validCodePattern)) {
-      this.message = 'Code valide !';
-      this.showError = false;
-      setTimeout(() => {
-        // Naviguer vers la page de résultat pour une promo spéciale
-        this.router.navigate(['/promo-result'], { 
-          queryParams: { 
-            promoTitle: 'Code Voucher', 
-            promoValue: '500 crédits premium'
-          }
-        });
-      }, 1000);
-    } else {
-      this.message = 'Format de code invalide. Veuillez respecter le format XX-XXXX-XXXX-XXXX-XXXX.';
-      this.showError = true;
+      // Naviguer vers la page de résultat pour une promo spéciale
+      this.router.navigate(['/promo-result'], { 
+        queryParams: { 
+          promoTitle: 'Code Voucher', 
+          promoValue: '500 crédits premium'
+        }
+      });
     }
   }
 
   /**
-   * Formate automatiquement le code pendant la saisie
+   * Ajoute un caractère au code
    */
-  formatCode(): void {
-    // Supprimer tous les tirets
+  appendDigit(digit: string): void {
+    // Supprimer tous les tirets actuels
     let rawCode = this.voucherCode.replace(/-/g, '');
+    
+    // Limiter la longueur à 18 caractères (correspond à XX-XXXX-XXXX-XXXX-XXXX)
+    if (rawCode.length < 18) {
+      rawCode += digit;
+    }
+    
+    // Reformater avec des tirets
+    this.formatCode(rawCode);
+  }
+  
+  /**
+   * Supprime le dernier caractère du code
+   */
+  removeLastDigit(): void {
+    // Supprimer tous les tirets actuels
+    let rawCode = this.voucherCode.replace(/-/g, '');
+    
+    // Supprimer le dernier caractère
+    if (rawCode.length > 0) {
+      rawCode = rawCode.substring(0, rawCode.length - 1);
+    }
+    
+    // Reformater avec des tirets
+    this.formatCode(rawCode);
+  }
+
+  /**
+   * Formate automatiquement le code avec des tirets
+   */
+  formatCode(rawCode: string): void {
     // Convertir en majuscules
     rawCode = rawCode.toUpperCase();
     
@@ -68,7 +83,7 @@ export class PinCodeComponent {
     
     // Reformater avec des tirets
     if (rawCode.length > 0) {
-      formattedCode = rawCode.substring(0, 2);
+      formattedCode = rawCode.substring(0, Math.min(2, rawCode.length));
       
       if (rawCode.length > 2) {
         formattedCode += '-' + rawCode.substring(2, Math.min(6, rawCode.length));
@@ -95,7 +110,5 @@ export class PinCodeComponent {
    */
   clearCode(): void {
     this.voucherCode = '';
-    this.message = '';
-    this.showError = false;
   }
 }

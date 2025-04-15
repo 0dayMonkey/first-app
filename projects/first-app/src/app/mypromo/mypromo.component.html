@@ -24,8 +24,10 @@
         </div>
         
         <div class="item-content">
-          <div class="item-title">{{ promo.title }}</div>
-          <div class="item-value">{{ promo.value }}</div>
+          <div class="item-header">
+            <div class="item-title">{{ promo.title }}</div>
+            <div class="item-value">{{ promo.value }}</div>
+          </div>
         </div>
         
         <div *ngIf="promo.selected" class="item-check" (click)="validatePromo(promo, $event)">
