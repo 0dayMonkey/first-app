@@ -42,6 +42,7 @@
     transition: background-color 0.2s;
     height: 76px;
     box-sizing: border-box;
+    justify-content: space-between; /* Aligne les éléments avec espace entre eux */
   
     &:first-child {
       background-color: rgba(255, 87, 34, 0.2); /* Utilisation de la couleur d'accent avec opacité */
@@ -100,6 +101,12 @@
     
   .item-content {
     flex: 1;
+    transition: flex 0.2s ease;
+    padding-right: 16px; /* Espace entre le contenu et le bouton */
+    
+    &.with-button {
+      flex: 0.7; /* Réduire l'espace quand le bouton est affiché */
+    }
   }
     
   .item-header {
@@ -128,6 +135,7 @@
     
   .item-arrow {
     color: rgba(255, 255, 255, 0.5);
+    margin-left: auto; /* Pousse vers la droite */
     
     mat-icon {
       font-size: 24px;
@@ -137,41 +145,37 @@
     }
   }
     
-  .item-check {
-    color: #FF5722; /* Utilisation de la couleur d'accent */
-    
-    mat-icon {
-      font-size: 24px;
-      height: 24px;
-      width: 24px;
-      line-height: 24px;
-    }
-  }
-    
-  .item-radio {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+  .apply-button {
+    flex-shrink: 0; /* Empêche le bouton de rétrécir */
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-left: 12px;
-  }
+    justify-content: center;
+    margin-left: auto; /* Pousse le bouton tout à droite */
     
-  .radio-button {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: transparent;
-  }
-    
-  .selected .radio-button {
-    background-color: #FF5722; /* Utilisation de la couleur d'accent */
-  }
-    
-  .selected .item-radio {
-    border-color: #FF5722; /* Utilisation de la couleur d'accent */
+    .apply-btn {
+      background-color: #FF5722;
+      color: white;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: max(3.5vh, 22pt);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      width: 160px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        background-color: darken(#FF5722, 5%);
+      }
+      
+      &:active {
+        background-color: darken(#FF5722, 10%);
+      }
+    }
   }
     
   /* Override pour assurer le défilement */

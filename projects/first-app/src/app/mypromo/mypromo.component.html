@@ -21,19 +21,15 @@
           <mat-icon>{{ getPromoIcon(promo) }}</mat-icon>
         </div>
         
-        <div class="item-content">
+        <div class="item-content" [class.with-button]="promo.selected">
           <div class="item-header">
             <div class="item-title">{{ promo.title }}</div>
             <div class="item-value">{{ promo.value }}</div>
           </div>
         </div>
         
-        <div *ngIf="promo.selected" class="item-check" (click)="validatePromo(promo, $event)">
-          <mat-icon>check_circle</mat-icon>
-        </div>
-        
-        <div *ngIf="!promo.selected" class="item-radio">
-          <div class="radio-button"></div>
+        <div *ngIf="promo.selected" class="apply-button" (click)="validatePromo(promo, $event)">
+          <button mat-flat-button class="apply-btn">Appliquer</button>
         </div>
       </div>
     </div>
