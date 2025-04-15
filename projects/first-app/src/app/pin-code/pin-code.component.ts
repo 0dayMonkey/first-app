@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-pin-code',
@@ -12,7 +11,6 @@ import { HeaderComponent } from '../header/header.component';
     CommonModule,
     FormsModule,
     MatIconModule,
-    HeaderComponent
   ],
   templateUrl: './pin-code.component.html',
   styleUrls: ['./pin-code.component.scss']

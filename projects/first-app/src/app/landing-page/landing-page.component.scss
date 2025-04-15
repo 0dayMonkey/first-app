@@ -1,7 +1,7 @@
 .landing-page-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 56px); // Soustraire la hauteur du header
+  height: 100%; /* Utiliser 100% de la hauteur */
   background-color: #121212;
 }
 

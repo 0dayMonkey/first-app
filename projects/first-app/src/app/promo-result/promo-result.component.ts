@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { HeaderComponent } from '../header/header.component';
 import { PromoService } from '../services/promo.service';
 
 @Component({
@@ -10,7 +9,6 @@ import { PromoService } from '../services/promo.service';
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
     MatIconModule
   ],
   templateUrl: './promo-result.component.html',

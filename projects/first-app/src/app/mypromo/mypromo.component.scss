@@ -1,30 +1,35 @@
 .mypromo-container {
     display: flex;
     flex-direction: column;
-    height: calc(100% - 50pt); // Utilisation de minSizeImage
+    position: absolute; /* Position absolue pour couvrir tout l'espace */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%; /* Hauteur totale */
     width: 100%;
     background-color: #303030;
     padding: 0;
-    overflow: hidden;
     box-sizing: border-box;
   }
-  
+    
   .promo-list-container {
     flex: 1;
-    overflow-y: auto !important; // Force le défilement vertical
-    -webkit-overflow-scrolling: touch; // Pour un meilleur défilement sur iOS
+    overflow-y: auto; /* Permettre le défilement vertical */
+    -webkit-overflow-scrolling: touch; /* Pour un meilleur défilement sur iOS */
     padding: 16px;
     display: flex;
     justify-content: center;
     box-sizing: border-box;
+    height: 100%; /* Forcer la hauteur à 100% */
   }
-  
+    
   .promo-list {
     padding: 0;
     width: 80%;
     max-width: 1000px;
   }
-  
+    
   .promo-item {
     display: flex;
     align-items: center;
@@ -39,18 +44,18 @@
     box-sizing: border-box;
   
     &:first-child {
-      background-color: rgba(255, 87, 34, 0.2); // Utilisation de la couleur d'accent avec opacité
+      background-color: rgba(255, 87, 34, 0.2); /* Utilisation de la couleur d'accent avec opacité */
     }
     
     &.selected {
-      background-color: rgba(255, 87, 34, 0.3); // Utilisation de la couleur d'accent avec opacité
+      background-color: rgba(255, 87, 34, 0.3); /* Utilisation de la couleur d'accent avec opacité */
     }
     
     &:active {
       background-color: #FF5722;
     }
   }
-  
+    
   .item-icon {
     width: 44px;
     height: 44px;
@@ -62,7 +67,7 @@
     flex-shrink: 0;
     
     &.add-icon {
-      background-color: #FF5722; // Utilisation de la couleur d'accent
+      background-color: #FF5722; /* Utilisation de la couleur d'accent */
       
       mat-icon {
         color: white;
@@ -92,35 +97,35 @@
       line-height: 22px;
     }
   }
-  
+    
   .item-content {
     flex: 1;
   }
-  
+    
   .item-header {
     display: flex;
     align-items: center;
   }
-  
+    
   .item-text {
     flex: 1;
     font-weight: 600;
-    color: #FF5722; // Utilisation de la couleur d'accent
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    color: #FF5722; /* Utilisation de la couleur d'accent */
+    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
   }
-  
+    
   .item-title {
     font-weight: 600;
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
     color: white;
     margin-right: 12px;
   }
-  
+    
   .item-value {
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
     color: rgba(255, 255, 255, 0.7);
   }
-  
+    
   .item-arrow {
     color: rgba(255, 255, 255, 0.5);
     
@@ -131,9 +136,9 @@
       line-height: 24px;
     }
   }
-  
+    
   .item-check {
-    color: #FF5722; // Utilisation de la couleur d'accent
+    color: #FF5722; /* Utilisation de la couleur d'accent */
     
     mat-icon {
       font-size: 24px;
@@ -142,7 +147,7 @@
       line-height: 24px;
     }
   }
-  
+    
   .item-radio {
     width: 24px;
     height: 24px;
@@ -153,32 +158,32 @@
     align-items: center;
     margin-left: 12px;
   }
-  
+    
   .radio-button {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background-color: transparent;
   }
-  
+    
   .selected .radio-button {
-    background-color: #FF5722; // Utilisation de la couleur d'accent
+    background-color: #FF5722; /* Utilisation de la couleur d'accent */
   }
-  
+    
   .selected .item-radio {
-    border-color: #FF5722; // Utilisation de la couleur d'accent
+    border-color: #FF5722; /* Utilisation de la couleur d'accent */
   }
-  
+    
   /* Override pour assurer le défilement */
   ::-webkit-scrollbar {
-    display: block !important;
     width: 6px;
+    display: block;
   }
-  
+    
   ::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
   }
-  
+    
   ::-webkit-scrollbar-thumb {
     background: #FF5722;
     border-radius: 4px;

@@ -12,7 +12,6 @@ import { AppIconComponent } from '../app-icon/app-icon.component';
 import { StorageService } from '../services/storage.service';
 import { NotificationService } from '../services/notification.service';
 import { AppDataService } from '../services/app-data.service';
-import { HeaderComponent } from '../header/header.component';
 import { App } from '../models/app.model';
 
 @Component({
@@ -24,7 +23,7 @@ import { App } from '../models/app.model';
     MatButtonModule,
     DragDropModule,
     AppIconComponent,
-    HeaderComponent
+    
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']

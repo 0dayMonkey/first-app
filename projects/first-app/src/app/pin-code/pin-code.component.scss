@@ -1,28 +1,16 @@
 .pin-code-container {
     display: flex;
     flex-direction: column;
-    height: calc(100% - 50pt); // Utilisation de minSizeImage
+    position: absolute; /* Position absolue pour remplir tout l'espace */
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%; /* Hauteur à 100% */
     width: 100%;
     background-color: #303030;
     box-sizing: border-box;
     overflow: hidden;
-  }
-  
-  .pin-code-content {
-    display: flex;
-    flex-direction: column;
-    padding: 16px;
-    height: 100%;
-    box-sizing: border-box;
-  }
-  
-  .title {
-    text-align: center;
-    font-size: max(5vh, 20pt); // Utilisation de fontSize
-    font-weight: 500;
-    color: white;
-    margin-top: 0;
-    margin-bottom: 16px;
   }
   
   .two-column-layout {
@@ -31,25 +19,37 @@
     max-width: 1100px;
     margin: 0 auto;
     box-sizing: border-box;
+    height: 100%;
   }
   
   .left-column {
-    flex: 1;
+    flex: 0.8;
     display: flex;
     flex-direction: column;
-    padding: 0 20px;
+    align-items: center;
     justify-content: center;
+    padding: 0 30px;
     box-sizing: border-box;
+  }
+  
+  .title {
+    text-align: center;
+    font-size: max(5vh, 20pt);
+    font-weight: 500;
+    color: white;
+    margin-top: 0;
+    margin-bottom: 30px;
+    width: 100%;
   }
   
   .separator {
     width: 2px;
     background-color: rgba(255, 255, 255, 0.2);
-    margin: 20px 0;
+    margin: 60px 0;
   }
   
   .right-column {
-    flex: 1.5;
+    flex: 1.2;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,14 +67,14 @@
   .code-input {
     width: 100%;
     padding: 12px;
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    font-size: max(3vh, 20pt);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
     text-align: left;
     box-sizing: border-box;
-    height: 50px;
+    height: 55px;
     
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
@@ -100,26 +100,29 @@
   }
   
   .format-note {
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    font-size: max(3vh, 20pt);
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 24px;
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: center;
   }
   
   .validate-button {
-    padding: 12px;
-    background-color: #FF5722; // Utilisation de la couleur d'accent
+    padding: 15px;
+    background-color: #FF5722;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
+    font-size: max(3vh, 20pt);
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
     letter-spacing: 1px;
-    height: 50px;
+    height: 60px;
     box-sizing: border-box;
     white-space: pre-wrap !important;
     line-height: 100% !important;
+    width: 100%;
     
     &:disabled {
       background-color: rgba(255, 255, 255, 0.3);
@@ -138,9 +141,9 @@
   .numpad {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     width: 100%;
-    max-width: 470px;
+    max-width: 530px;
   }
   
   .numpad-row {
@@ -150,20 +153,20 @@
   }
   
   .numpad-key {
-    width: 140px;
-    height: 50px;
-    border-radius: 8px;
+    width: 160px;
+    height: 70px;
+    border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: max(3vh, 20pt); // Utilisation de smallFontSize
-    font-weight: 400;
+    font-size: max(4vh, 28pt);
+    font-weight: 500;
     color: white;
     cursor: pointer;
-    margin: 0 5px;
-    box-shadow: none;
+    margin: 0 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
     white-space: pre-wrap !important;
     line-height: 100% !important;
@@ -174,16 +177,17 @@
     
     &:active {
       background-color: #FF5722;
+      transform: scale(0.98);
     }
     
     &.backspace {
       color: #FF5722;
       
       .mat-icon {
-        font-size: 22px;
-        height: 22px;
-        width: 22px;
-        line-height: 22px;
+        font-size: 32px;
+        height: 32px;
+        width: 32px;
+        line-height: 32px;
       }
     }
   }

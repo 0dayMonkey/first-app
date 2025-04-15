@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 
-import { HeaderComponent } from '../header/header.component';
 import { PromoService } from '../services/promo.service';
 import { Promo } from '../models/promo.model';
 
@@ -13,19 +12,19 @@ import { Promo } from '../models/promo.model';
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
     MatIconModule,
     MatRippleModule
   ],
   templateUrl: './mypromo.component.html',
   styleUrls: ['./mypromo.component.scss']
 })
-export class MypromoComponent implements OnInit {
+export class MypromoComponent implements OnInit, AfterViewInit {
   promos: Promo[] = [];
   
   constructor(
     private promoService: PromoService,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +32,23 @@ export class MypromoComponent implements OnInit {
     this.promoService.getPromos().subscribe(promos => {
       this.promos = promos;
     });
+  }
+  
+  ngAfterViewInit(): void {
+    // Correction pour le défilement après le rendu de la vue
+    setTimeout(() => {
+      const scrollContainer = this.elementRef.nativeElement.querySelector('.promo-list-container');
+      if (scrollContainer) {
+        // Force le style de défilement
+        scrollContainer.style.overflowY = 'auto';
+        scrollContainer.style.height = 'calc(100% - 30px)'; // Laisser un peu d'espace pour éviter les débordements
+        
+        // Ajouter un événement de défilement pour vérifier qu'il fonctionne
+        scrollContainer.addEventListener('scroll', () => {
+          console.log('Scrolling works!');
+        });
+      }
+    }, 100);
   }
 
   /**
@@ -48,8 +64,6 @@ export class MypromoComponent implements OnInit {
     }
     return 'gift-icon';
   }
-
-
 
   getPromoIcon(promo: Promo): string {
     if (promo.title.toLowerCase().includes('vendredi')) {

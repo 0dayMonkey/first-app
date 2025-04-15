@@ -1,7 +1,7 @@
 .dashboard-container {
   position: relative;
   width: 100%;
-  height: calc(100vh - 56px);
+  height: 100%; /* Utilise toute la hauteur disponible */
   background-color: #121212;
   overflow: hidden;
   user-select: none;
