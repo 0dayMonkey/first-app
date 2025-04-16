@@ -33,16 +33,15 @@ export class PromoResultComponent implements OnInit, OnDestroy {
       this.promoTitle = params['promoTitle'] || 'Promotion';
       this.promoValue = params['promoValue'] || '';
       
-      // Supprimer la promotion si un ID est fourni et que la promotion n'est pas réutilisable
+      // Supprimer la promotion si un ID est fourni
       if (this.promoId) {
-        if (this.promoId) {
-          this.promoService.usePromo(this.promoId);
-        } else {
-          this.promoService.removePromo(this.promoId);
-        }
+        console.log(`Tentative de suppression de la promo ID: ${this.promoId}`);
+        // S'assurer que la promotion est bien supprimée
+        this.promoService.removePromo(this.promoId);
+      } else {
+        console.warn('Aucun ID de promotion fourni pour la suppression');
       }
     });
-  
 
     // Démarrer le compte à rebours
     this.timer = setInterval(() => {
@@ -60,15 +59,28 @@ export class PromoResultComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Retourne à la page des promotions
+   * Retourne à la page des promotions avec vérification supplémentaire
    */
   navigateBack(): void {
     if (this.timer) {
       clearInterval(this.timer);
     }
+    
+    // Vérifier que la promo a bien été supprimée
+    if (this.promoId) {
+      // Utiliser le service pour vérifier
+      const promos = this.promoService.getPromosSync();
+      const stillExists = promos.some(p => p.id === this.promoId);
+      console.log(`Vérification avant retour: promo ${this.promoId} existe toujours: ${stillExists}`);
+      // Si la promo existe encore, essayez de la supprimer à nouveau
+      if (stillExists) {
+        console.warn(`Tentative supplémentaire de suppression de la promo ${this.promoId}`);
+        this.promoService.removePromo(this.promoId);
+      }
+    }
+    
     this.router.navigate(['/mypromo']);
   }
-
 
   @HostListener('click', ['$event'])
   onClick(event: Event): void {

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-pin-code',
@@ -15,13 +16,44 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './pin-code.component.html',
   styleUrls: ['./pin-code.component.scss']
 })
-export class PinCodeComponent {
+export class PinCodeComponent implements OnInit {
   voucherCode: string = '';
   
-  // Format attendu: xx-xxxx-xxxx-xxxx-xxxx
-  readonly validCodePattern = /^\w{2}-\w{4}-\w{4}-\w{4}-\w{4}$/;
-
-  constructor(private router: Router) {}
+  // Paramètres configurables
+  voucherCodeFormat: string = 'XX-XXXX-XXXX-XXXX-XXXX'; // Format pour formatage
+  validCodePattern: RegExp; // Expression régulière de validation
+  placeholderText: string = 'XX-XXXX-XXXX-XXXX-XXXX'; // Texte placeholder
+  pinTitle: string = 'Entrez votre code voucher';
+  clearButtonText: string = 'C';
+  validateButtonText: string = 'VALIDER LE CODE';
+  
+  constructor(
+    private router: Router,
+    private configService: ConfigService
+  ) {
+    // Initialisation avec valeur par défaut
+    this.validCodePattern = /^\w{2}-\w{4}-\w{4}-\w{4}-\w{4}$/;
+  }
+  
+  ngOnInit(): void {
+    // Charger les paramètres depuis la configuration
+    this.voucherCodeFormat = this.configService.getValue('promotions.VOUCHER_CODE_FORMAT', 'XX-XXXX-XXXX-XXXX-XXXX');
+    this.placeholderText = this.configService.getValue('pincode.PLACEHOLDER_TEXT', this.voucherCodeFormat);
+    this.pinTitle = this.configService.getValue('pincode.PIN_TITLE', 'Entrez votre code voucher');
+    this.clearButtonText = this.configService.getValue('pincode.CLEAR_BUTTON_TEXT', 'C');
+    this.validateButtonText = this.configService.getValue('pincode.VALIDATE_BUTTON_TEXT', 'VALIDER LE CODE');
+    
+    // Créer un RegExp à partir de la chaîne stockée dans la configuration
+    const pattern = this.configService.getValue('promotions.VOUCHER_CODE_PATTERN', '^\\w{2}-\\w{4}-\\w{4}-\\w{4}-\\w{4}$');
+    try {
+      this.validCodePattern = new RegExp(pattern);
+    } catch (error) {
+      console.error('Format de RegExp invalide dans la configuration:', error);
+      // Conserver la valeur par défaut
+    }
+    
+    console.log(`PinCode initialisé avec format: ${this.voucherCodeFormat}, pattern: ${this.validCodePattern}, placeholder: ${this.placeholderText}`);
+  }
 
   /**
    * Valide le code voucher saisi
@@ -45,8 +77,10 @@ export class PinCodeComponent {
     // Supprimer tous les tirets actuels
     let rawCode = this.voucherCode.replace(/-/g, '');
     
-    // Limiter la longueur à 18 caractères (correspond à XX-XXXX-XXXX-XXXX-XXXX)
-    if (rawCode.length < 18) {
+    // Limiter la longueur basée sur le format dans la configuration
+    const maxLength = this.voucherCodeFormat.replace(/-/g, '').length;
+    
+    if (rawCode.length < maxLength) {
       rawCode += digit;
     }
     
@@ -71,32 +105,34 @@ export class PinCodeComponent {
   }
 
   /**
-   * Formate automatiquement le code avec des tirets
+   * Formate automatiquement le code avec des tirets selon le format configuré
    */
   formatCode(rawCode: string): void {
     // Convertir en majuscules
     rawCode = rawCode.toUpperCase();
     
-    let formattedCode = '';
+    // Obtenir le format depuis la configuration
+    const format = this.voucherCodeFormat;
+    const segments = format.split('-');
     
-    // Reformater avec des tirets
-    if (rawCode.length > 0) {
-      formattedCode = rawCode.substring(0, Math.min(2, rawCode.length));
+    let formattedCode = '';
+    let currentPosition = 0;
+    
+    // Pour chaque segment du format, extraire la partie correspondante du code brut
+    for (let i = 0; i < segments.length; i++) {
+      const segmentLength = segments[i].length;
       
-      if (rawCode.length > 2) {
-        formattedCode += '-' + rawCode.substring(2, Math.min(6, rawCode.length));
-      }
-      
-      if (rawCode.length > 6) {
-        formattedCode += '-' + rawCode.substring(6, Math.min(10, rawCode.length));
-      }
-      
-      if (rawCode.length > 10) {
-        formattedCode += '-' + rawCode.substring(10, Math.min(14, rawCode.length));
-      }
-      
-      if (rawCode.length > 14) {
-        formattedCode += '-' + rawCode.substring(14, Math.min(18, rawCode.length));
+      if (currentPosition < rawCode.length) {
+        const end = Math.min(currentPosition + segmentLength, rawCode.length);
+        const segment = rawCode.substring(currentPosition, end);
+        
+        if (formattedCode === '') {
+          formattedCode = segment;
+        } else {
+          formattedCode += '-' + segment;
+        }
+        
+        currentPosition += segmentLength;
       }
     }
     

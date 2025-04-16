@@ -1,0 +1,69 @@
+{
+    "animations": {
+      "TITLE_MARQUEE_SPEED": 10,
+      "TITLE_MARQUEE_DELAY": 2,
+      "TITLE_MIN_CHARS": 20,
+      "TITLE_CONTAINER_WIDTH": 180,
+      "ANIMATION_REDEEM": true,
+      "VALIDATION_ANIMATION_DURATION": 300
+    },
+    "notifications": {
+      "UPDATE_INTERVAL": 5000,
+      "RANDOM_NOTIFICATION_CHANCE": 0.15
+    },
+    "promotions": {
+      "VOUCHER_CODE_FORMAT": "XX-XXXX-XXXX-XXXX-XXXX",
+      "VOUCHER_CODE_PATTERN": "^\\w{2}-\\w{4}-\\w{4}-\\w{4}-\\w{4}$",
+      "PROMO_RESULT_COUNTDOWN": 30,
+      "DEFAULT_PROMOTIONS": [
+        {
+          "id": "1",
+          "title": "Vendredi 13",
+          "value": "13 € offerts",
+          "selected": false
+        },
+        {
+          "id": "2",
+          "title": "Promotion pour nos joueurs",
+          "value": "100 crédits promo",
+          "selected": false
+        },
+        {
+          "id": "3",
+          "title": "Été 2025",
+          "value": "25 crédits regular",
+          "selected": false
+        },
+        {
+          "id": "4",
+          "title": "Une très longue promotion qui va certainement défiler avec l'animation",
+          "value": "200 points bonus",
+          "selected": false
+        }
+      ]
+    },
+    "dashboard": {
+      "PAGE_SIZE": 5,
+      "STORAGE_KEY": "dashboard_apps",
+      "MYPROMO_APP_ID": "mypromo-app-id"
+    },
+    "storage": {
+      "PROMOS_STORAGE_KEY": "mypromo_promos",
+      "RESET_STORAGE_ON_INIT": false,
+      "USE_DEFAULT_PROMOS_ONLY": true
+    },
+    "pincode": {
+      "PLACEHOLDER_TEXT": "XX-XXXX-XXXX-XXXX-XXXX",
+      "CLEAR_BUTTON_TEXT": "C",
+      "VALIDATE_BUTTON_TEXT": "VALIDER LE CODE",
+      "PIN_TITLE": "Entrez votre code voucher",
+      "ERROR_MESSAGE": "Code invalide. Veuillez réessayer."
+    },
+    "features": {
+      "ENABLE_CONSOLE_LOGS": true,
+      "ENABLE_ERROR_REPORTING": true,
+      "ENABLE_PIN_CODE": true,
+      "CONFIG_RELOAD_INTERVAL": 10000,
+      "DEFAULT_PAGE_INDEX": 0
+    }
+  }

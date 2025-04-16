@@ -1,7 +1,10 @@
 <div class="mypromo-container">
   <div class="promo-list-container">
     <div class="promo-list">
-      <div class="promo-item" (click)="openPinCodePage()">
+      <div class="promo-item" 
+           (click)="openPinCodePage()"
+           role="button"
+           aria-label="Saisir un nouveau code promotion">
         <div class="item-icon add-icon">
           <mat-icon>add_circle</mat-icon>
         </div>
@@ -15,7 +18,11 @@
         *ngFor="let promo of promos" 
         class="promo-item" 
         [class.selected]="promo.selected"
-        (click)="onPromoClick(promo)">
+        (click)="onPromoClick(promo)"
+        role="button"
+        [attr.aria-label]="'Promotion ' + promo.title + ', valeur: ' + promo.value"
+        [attr.aria-selected]="promo.selected"
+        tabindex="0">
         
         <div class="item-icon" [ngClass]="getPromoIconClass(promo)">
           <mat-icon>{{ getPromoIcon(promo) }}</mat-icon>
@@ -23,13 +30,19 @@
         
         <div class="item-content" [class.with-button]="promo.selected">
           <div class="item-header">
-            <div class="item-title">{{ promo.title }}</div>
+            <!-- Utilisation des paramètres de configuration -->
+            <app-text-marquee 
+              [text]="promo.title" 
+              [containerWidth]="titleContainerWidth"
+              [maxCharLength]="titleMinChars"
+              class="item-title"
+            ></app-text-marquee>
             <div class="item-value">{{ promo.value }}</div>
           </div>
         </div>
         
         <div *ngIf="promo.selected" class="apply-button" (click)="validatePromo(promo, $event)">
-          <button mat-flat-button class="apply-btn">Appliquer</button>
+          <button mat-flat-button class="apply-btn" aria-label="Appliquer cette promotion">Appliquer</button>
         </div>
       </div>
     </div>

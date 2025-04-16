@@ -6,7 +6,9 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 
 import { PromoService } from '../services/promo.service';
+import { ConfigService } from '../services/config.service';
 import { Promo } from '../models/promo.model';
+import { TextMarqueeComponent } from '../text-marquee/text-marquee.component';
 
 @Component({
   selector: 'app-mypromo',
@@ -15,7 +17,8 @@ import { Promo } from '../models/promo.model';
     CommonModule,
     MatIconModule,
     MatRippleModule,
-    MatButtonModule
+    MatButtonModule,
+    TextMarqueeComponent
   ],
   templateUrl: './mypromo.component.html',
   styleUrls: ['./mypromo.component.scss']
@@ -23,15 +26,31 @@ import { Promo } from '../models/promo.model';
 export class MypromoComponent implements OnInit, AfterViewInit {
   promos: Promo[] = [];
   
+  // Paramètres configurables
+  titleContainerWidth: number = 180;
+  titleMinChars: number = 20;
+  animationRedeem: boolean = true;
+  validationDelay: number = 300;
+  
   constructor(
     private promoService: PromoService,
+    private configService: ConfigService,
     private router: Router,
     private elementRef: ElementRef
-  ) {}
+  ) {
+    // Charger la configuration
+    this.titleContainerWidth = this.configService.getValue('animations.TITLE_CONTAINER_WIDTH', 180);
+    this.titleMinChars = this.configService.getValue('animations.TITLE_MIN_CHARS', 20);
+    this.animationRedeem = this.configService.getValue('animations.ANIMATION_REDEEM', true);
+    this.validationDelay = this.configService.getValue('animations.VALIDATION_ANIMATION_DURATION', 300);
+    
+    console.log(`MyPromo initialisé avec: largeur=${this.titleContainerWidth}px, min chars=${this.titleMinChars}, animation=${this.animationRedeem}`);
+  }
 
   ngOnInit(): void {
     // S'abonner aux mises à jour des promotions
     this.promoService.getPromos().subscribe(promos => {
+      console.log(`MyPromoComponent: Mise à jour des promos, ${promos.length} restantes`);
       this.promos = promos;
     });
   }
@@ -93,17 +112,55 @@ export class MypromoComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Valide la promotion sélectionnée
+   * Valide la promotion sélectionnée avec animation de confirmation
    */
   validatePromo(promo: Promo, event: Event): void {
     event.stopPropagation(); // Empêche le déclenchement du onPromoClick
+    
+    console.log(`Validation de la promo ID: ${promo.id}, Titre: ${promo.title}`);
+    
+    // Vérifier que la promo a un ID valide
+    if (!promo.id) {
+      console.error('Promo sans ID détectée:', promo);
+      // Générer un ID temporaire si nécessaire
+      promo.id = Date.now().toString();
+    }
+    
+    // Animation conditionnelle basée sur la configuration
+    if (this.animationRedeem) {
+      const promoElement = (event.currentTarget as HTMLElement).closest('.promo-item') as HTMLElement;
+      if (promoElement) {
+        promoElement.classList.add('validating');
+      
+        setTimeout(() => {
+          this.router.navigate(['/promo-result'], { 
+            queryParams: { 
+              promoId: promo.id,
+              promoTitle: promo.title,
+              promoValue: promo.value
+            }
+          });
+        }, this.validationDelay);
+      } else {
+        // Navigation immédiate si l'élément n'est pas trouvé
+        this.navigateToResult(promo);
+      }
+    } else {
+      // Navigation immédiate si l'animation est désactivée
+      this.navigateToResult(promo);
+    }
+  }
+  
+  /**
+   * Navigation vers la page de résultat
+   */
+  private navigateToResult(promo: Promo): void {
     this.router.navigate(['/promo-result'], { 
       queryParams: { 
         promoId: promo.id,
         promoTitle: promo.title,
-        promoValue: promo.value,
-
+        promoValue: promo.value
       }
     });
   }
-}   
+}
