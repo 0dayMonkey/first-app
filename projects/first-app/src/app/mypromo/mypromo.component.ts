@@ -51,7 +51,12 @@ export class MypromoComponent implements OnInit, AfterViewInit {
     // S'abonner aux mises à jour des promotions
     this.promoService.getPromos().subscribe(promos => {
       console.log(`MyPromoComponent: Mise à jour des promos, ${promos.length} restantes`);
-      this.promos = promos;
+      
+      // S'assurer que chaque promotion a la propriété selected définie
+      this.promos = promos.map(promo => ({
+        ...promo,
+        selected: promo.selected === undefined ? false : promo.selected
+      }));
     });
   }
   

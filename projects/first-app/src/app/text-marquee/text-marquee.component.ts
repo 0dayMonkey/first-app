@@ -8,15 +8,15 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="marquee-container" 
-         [style.width.px]="containerWidth">
-      <div #textElement 
-           class="marquee-text" 
-           [class.animate]="shouldAnimate" 
-           [style.animationDuration]="marqueeSpeed + 's'"
-           [style.animationDelay]="marqueeDelay + 's'">
+    <div class="marquee-container" [style.width.px]="containerWidth">
+      <div *ngIf="!shouldAnimate || !selected">
         <span class="text-content">{{ text }}</span>
-        <span class="text-duplicate" *ngIf="shouldAnimate">{{ text }}</span>
+      </div>
+      <div *ngIf="shouldAnimate && selected" class="marquee-wrapper">
+        <div class="marquee">
+          <span>{{ text }}</span>
+          <span>{{ text }}</span>
+        </div>
       </div>
     </div>
   `,
@@ -27,40 +27,36 @@ import { Subscription } from 'rxjs';
       position: relative;
     }
     
-    .marquee-text {
-      display: inline-block;
-      white-space: nowrap;
-      position: relative;
-    }
-    
     .text-content {
       display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     
-    .text-duplicate {
+    .marquee-wrapper {
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .marquee {
       display: inline-block;
-      padding-left: 20px;
+      white-space: nowrap;
+      animation: marquee-scroll linear infinite;
     }
     
-    .animate.marquee-text {
-      animation-name: marqueeAnim;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      animation-fill-mode: forwards;
+    .marquee span {
+      display: inline-block;
+      padding-right: 20px;
     }
     
-    @keyframes marqueeAnim {
+    @keyframes marquee-scroll {
       0% {
         transform: translateX(0);
       }
-      45% {
-        transform: translateX(calc(-100% + 20px));
-      }
-      45.01% {
-        transform: translateX(0);
-      }
       100% {
-        transform: translateX(0);
+        transform: translateX(-50%);
       }
     }
   `]
@@ -69,15 +65,15 @@ export class TextMarqueeComponent implements OnInit, AfterViewInit, OnChanges, O
   @Input() text: string = '';
   @Input() containerWidth: number = 0;
   @Input() maxCharLength: number = 0;
+  @Input() selected: boolean = false;
   
   @ViewChild('textElement') textElement!: ElementRef;
   
   shouldAnimate: boolean = false;
-  marqueeSpeed: number = 0;
-  marqueeDelay: number = 0;
+  marqueeSpeed: number = 10;
   configSubscription: Subscription | null = null;
   
-  constructor(private configService: ConfigService) {}
+  constructor(private configService: ConfigService, private el: ElementRef) {}
   
   ngOnInit() {
     // Charger la configuration initiale
@@ -93,8 +89,7 @@ export class TextMarqueeComponent implements OnInit, AfterViewInit, OnChanges, O
   
   private loadConfig() {
     // Charger les paramètres depuis la configuration
-    this.marqueeSpeed = this.configService.getValue('animations.TITLE_MARQUEE_SPEED', 100);
-    this.marqueeDelay = this.configService.getValue('animations.TITLE_MARQUEE_DELAY', 2);
+    this.marqueeSpeed = this.configService.getValue('animations.TITLE_MARQUEE_SPEED', 10);
     
     // Si les propriétés n'ont pas été définies par les inputs, les charger de la config
     if (this.containerWidth <= 0) {
@@ -105,8 +100,6 @@ export class TextMarqueeComponent implements OnInit, AfterViewInit, OnChanges, O
       this.maxCharLength = this.configService.getValue('animations.TITLE_MIN_CHARS', 20);
     }
     
-    console.log(`TextMarquee mis à jour: vitesse=${this.marqueeSpeed}s, délai=${this.marqueeDelay}s, largeur=${this.containerWidth}px, min chars=${this.maxCharLength}`);
-    
     // Vérifier immédiatement si le texte doit être animé
     setTimeout(() => this.checkTextOverflow(), 50);
   }
@@ -114,13 +107,15 @@ export class TextMarqueeComponent implements OnInit, AfterViewInit, OnChanges, O
   ngAfterViewInit() {
     setTimeout(() => {
       this.checkTextOverflow();
+      this.applyMarqueeAnimation();
     }, 50);
   }
   
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['text']) {
+    if (changes['text'] || changes['selected']) {
       setTimeout(() => {
         this.checkTextOverflow();
+        this.applyMarqueeAnimation();
       }, 50);
     }
   }
@@ -141,15 +136,45 @@ export class TextMarqueeComponent implements OnInit, AfterViewInit, OnChanges, O
       return;
     }
     
-    // Ensuite vérifier si le texte est visuellement trop long pour le conteneur
-    if (this.textElement && this.textElement.nativeElement) {
-      const textWidth = this.textElement.nativeElement.querySelector('.text-content').offsetWidth;
-      this.shouldAnimate = textWidth > this.containerWidth;
+    // Vérifier la largeur du texte
+    const tempElement = document.createElement('span');
+    tempElement.style.visibility = 'hidden';
+    tempElement.style.position = 'absolute';
+    tempElement.style.whiteSpace = 'nowrap';
+    tempElement.innerText = this.text;
+    document.body.appendChild(tempElement);
+    
+    const textWidth = tempElement.getBoundingClientRect().width;
+    document.body.removeChild(tempElement);
+    
+    this.shouldAnimate = textWidth > this.containerWidth;
+  }
+  
+  /**
+   * Applique l'animation de défilement avec la bonne vitesse
+   */
+  applyMarqueeAnimation() {
+    if (this.shouldAnimate && this.selected) {
+      // Calculer une vitesse appropriée basée sur la longueur du texte
+      const tempElement = document.createElement('span');
+      tempElement.style.visibility = 'hidden';
+      tempElement.style.position = 'absolute';
+      tempElement.style.whiteSpace = 'nowrap';
+      tempElement.innerText = this.text;
+      document.body.appendChild(tempElement);
       
-      console.log(`Texte: "${this.text}", Longueur: ${this.text.length}, Largeur: ${textWidth}px, Container: ${this.containerWidth}px, Animation: ${this.shouldAnimate}`);
-    } else {
-      // Fallback si l'élément n'est pas encore rendu
-      this.shouldAnimate = this.text.length > this.maxCharLength;
+      const textWidth = tempElement.getBoundingClientRect().width;
+      document.body.removeChild(tempElement);
+      
+      // La durée de l'animation dépend de la longueur du texte
+      // Plus le texte est long, plus l'animation doit être lente pour rester lisible
+      const duration = Math.max(5, textWidth / 50);
+      
+      // Appliquer l'animation CSS via le style injecté
+      const marqueeElements = this.el.nativeElement.querySelectorAll('.marquee');
+      marqueeElements.forEach((element: HTMLElement) => {
+        element.style.animationDuration = `${duration}s`;
+      });
     }
   }
 }

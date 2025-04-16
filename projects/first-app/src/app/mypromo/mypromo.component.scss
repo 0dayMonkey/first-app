@@ -1,196 +1,198 @@
+@use "sass:color";
+
 .mypromo-container {
-    display: flex;
-    flex-direction: column;
-    position: absolute; /* Position absolue pour couvrir tout l'espace */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%; /* Hauteur totale */
-    width: 100%;
-    background-color: #303030;
-    padding: 0;
-    box-sizing: border-box;
-  }
-    
-  .promo-list-container {
-    flex: 1;
-    overflow-y: auto; /* Permettre le défilement vertical */
-    -webkit-overflow-scrolling: touch; /* Pour un meilleur défilement sur iOS */
-    padding: 16px;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    height: 100%; /* Forcer la hauteur à 100% */
-  }
-    
-  .promo-list {
-    padding: 0;
-    width: 80%;
-    max-width: 1000px;
-  }
-    
-  .promo-item {
-    display: flex;
-    align-items: center;
-    padding: 16px;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-bottom: 16px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    transition: background-color 0.2s;
-    height: 76px;
-    box-sizing: border-box;
-    justify-content: space-between; /* Aligne les éléments avec espace entre eux */
+  display: flex;
+  flex-direction: column;
+  position: absolute; /* Position absolue pour couvrir tout l'espace */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%; /* Hauteur totale */
+  width: 100%;
+  background-color: #303030;
+  padding: 0;
+  box-sizing: border-box;
+}
   
-    &:first-child {
-      background-color: rgba(255, 87, 34, 0.2); /* Utilisation de la couleur d'accent avec opacité */
-    }
-    
-    &.selected {
-      background-color: rgba(255, 87, 34, 0.3); /* Utilisation de la couleur d'accent avec opacité */
-    }
-    
-    &:active {
-      background-color: #FF5722;
-    }
-  }
-    
-  .item-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-right: 24px;
-    flex-shrink: 0;
-    
-    &.add-icon {
-      background-color: #FF5722; /* Utilisation de la couleur d'accent */
-      
-      mat-icon {
-        color: white;
-        font-size: 24px;
-        height: 24px;
-        width: 24px;
-        line-height: 24px;
-      }
-    }
-    
-    &.calendar-icon {
-      background-color: #FF9800;
-    }
-    
-    &.gift-icon {
-      background-color: #4CAF50;
-    }
-    
-    &.summer-icon {
-      background-color: #03A9F4;
-    }
+.promo-list-container {
+  flex: 1;
+  overflow-y: auto; /* Permettre le défilement vertical */
+  -webkit-overflow-scrolling: touch; /* Pour un meilleur défilement sur iOS */
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 100%; /* Forcer la hauteur à 100% */
+}
   
-    mat-icon {
-      font-size: 22px;
-      height: 22px;
-      width: 22px;
-      line-height: 22px;
-    }
+.promo-list {
+  padding: 0;
+  width: 80%;
+  max-width: 1000px;
+}
+  
+.promo-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 76px;
+  box-sizing: border-box;
+  justify-content: space-between; /* Aligne les éléments avec espace entre eux */
+
+  &:first-child {
+    background-color: rgba(255, 87, 34, 0.2); /* Utilisation de la couleur d'accent avec opacité */
   }
-    
-  .item-content {
-    flex: 1;
-    transition: flex 0.2s ease;
-    padding-right: 16px; /* Espace entre le contenu et le bouton */
-    
-    &.with-button {
-      flex: 0.7; /* Réduire l'espace quand le bouton est affiché */
-    }
+  
+  &.selected {
+    background-color: rgba(255, 87, 34, 0.3); /* Utilisation de la couleur d'accent avec opacité */
   }
-    
-  .item-header {
-    display: flex;
-    align-items: center;
+  
+  &:active {
+    background-color: #FF5722;
   }
-    
-  .item-text {
-    flex: 1;
-    font-weight: 600;
-    color: #FF5722; /* Utilisation de la couleur d'accent */
-    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
-  }
-    
-  .item-title {
-    font-weight: 600;
-    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
-    color: white;
-    margin-right: 12px;
-  }
-    
-  .item-value {
-    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
-    color: rgba(255, 255, 255, 0.7);
-  }
-    
-  .item-arrow {
-    color: rgba(255, 255, 255, 0.5);
-    margin-left: auto; /* Pousse vers la droite */
+}
+  
+.item-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 24px;
+  flex-shrink: 0;
+  
+  &.add-icon {
+    background-color: #FF5722; /* Utilisation de la couleur d'accent */
     
     mat-icon {
+      color: white;
       font-size: 24px;
       height: 24px;
       width: 24px;
       line-height: 24px;
     }
   }
-    
-  .apply-button {
-    flex-shrink: 0; /* Empêche le bouton de rétrécir */
+  
+  &.calendar-icon {
+    background-color: #FF9800;
+  }
+  
+  &.gift-icon {
+    background-color: #4CAF50;
+  }
+  
+  &.summer-icon {
+    background-color: #03A9F4;
+  }
+
+  mat-icon {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    line-height: 22px;
+  }
+}
+  
+.item-content {
+  flex: 1;
+  transition: flex 0.2s ease;
+  padding-right: 16px; /* Espace entre le contenu et le bouton */
+  
+  &.with-button {
+    flex: 0.7; /* Réduire l'espace quand le bouton est affiché */
+  }
+}
+  
+.item-header {
+  display: flex;
+  align-items: center;
+}
+  
+.item-text {
+  flex: 1;
+  font-weight: 600;
+  color: #FF5722; /* Utilisation de la couleur d'accent */
+  font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
+}
+  
+.item-title {
+  font-weight: 600;
+  font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
+  color: white;
+  margin-right: 12px;
+}
+  
+.item-value {
+  font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
+  color: rgba(255, 255, 255, 0.7);
+}
+  
+.item-arrow {
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: auto; /* Pousse vers la droite */
+  
+  mat-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+    line-height: 24px;
+  }
+}
+  
+.apply-button {
+  flex-shrink: 0; /* Empêche le bouton de rétrécir */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto; /* Pousse le bouton tout à droite */
+  
+  .apply-btn {
+    background-color: #FF5722;
+    color: white;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 500;
+    font-size: max(3.5vh, 22pt);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 160px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto; /* Pousse le bouton tout à droite */
     
-    .apply-btn {
-      background-color: #FF5722;
-      color: white;
-      border-radius: 6px;
-      padding: 8px 16px;
-      font-weight: 500;
-      font-size: max(3.5vh, 22pt);
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      width: 160px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-      &:hover {
-        background-color: darken(#FF5722, 5%);
-      }
-      
-      &:active {
-        background-color: darken(#FF5722, 10%);
-      }
+    &:hover {
+      // Remplacer darken par color.adjust
+      background-color: color.adjust(#FF5722, $lightness: -5%);
+    }
+    
+    &:active {
+      // Remplacer darken par color.adjust
+      background-color: color.adjust(#FF5722, $lightness: -10%);
     }
   }
-  
+}
 
-    
-  /* Override pour assurer le défilement */
-  ::-webkit-scrollbar {
-    width: 6px;
-    display: block;
-  }
-    
-  ::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-  }
-    
-  ::-webkit-scrollbar-thumb {
-    background: #FF5722;
-    border-radius: 4px;
-  }
+/* Override pour assurer le défilement */
+::-webkit-scrollbar {
+  width: 6px;
+  display: block;
+}
+  
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+  
+::-webkit-scrollbar-thumb {
+  background: #FF5722;
+  border-radius: 4px;
+}

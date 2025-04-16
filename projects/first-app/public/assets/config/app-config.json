@@ -1,6 +1,6 @@
 {
     "animations": {
-      "TITLE_MARQUEE_SPEED": 10,
+      "TITLE_MARQUEE_SPEED": 60,
       "TITLE_MARQUEE_DELAY": 2,
       "TITLE_MIN_CHARS": 20,
       "TITLE_CONTAINER_WIDTH": 180,

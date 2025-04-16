@@ -40,6 +40,7 @@ export class AppIconComponent {
   
   /**
    * Gère les erreurs de chargement d'image
+
    */
   onImageError(): void {
     this.safeIconUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.defaultIconUrl);

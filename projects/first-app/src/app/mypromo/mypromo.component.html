@@ -30,11 +30,12 @@
         
         <div class="item-content" [class.with-button]="promo.selected">
           <div class="item-header">
-            <!-- Utilisation des paramètres de configuration -->
+            <!-- Modification de l'appel pour inclure le statut de sélection -->
             <app-text-marquee 
               [text]="promo.title" 
               [containerWidth]="titleContainerWidth"
               [maxCharLength]="titleMinChars"
+              [selected]="promo.selected"
               class="item-title"
             ></app-text-marquee>
             <div class="item-value">{{ promo.value }}</div>
