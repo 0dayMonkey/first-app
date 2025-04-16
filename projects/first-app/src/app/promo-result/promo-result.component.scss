@@ -1,0 +1,78 @@
+.result-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Utiliser la hauteur totale disponible */
+    background-color: #303030;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px; /* Ajouter un padding pour éviter que le contenu touche les bords */
+    position: absolute; /* Positionnement absolu pour couvrir tout l'espace */
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  
+  .result-content {
+    text-align: center;
+    max-width: 90%;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .success-icon {
+    font-size: 80px;
+    height: 80px;
+    width: 80px;
+    margin: 0 auto 10px;
+    
+    mat-icon {
+      font-size: 80px;
+      height: 80px;
+      width: 80px;
+      color: #FF5722; /* Utilisation de la couleur d'accent */
+    }
+  }
+  
+  .title {
+    color: #FF5722; /* Utilisation de la couleur d'accent */
+    font-size: max(7vh, 40pt); /* Plus grand que fontSize (text-huge) */
+    margin-bottom: 10px;
+    margin-top: 0;
+    font-weight: 500;
+  }
+  
+  .message {
+    font-size: max(5vh, 20pt); /* Utilisation de fontSize */
+    color: white;
+    line-height: 110%; /* Utilisation de text-small-spacing */
+    margin: 0;
+  
+    strong {
+      font-weight: 600;
+      color: white;
+    }
+    
+    p {
+      margin: 3px 0;
+    }
+  }
+  
+  .countdown {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: max(3vh, 20pt); /* Utilisation de smallFontSize */
+    margin-top: 15px;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+

@@ -1,0 +1,12 @@
+<div class="app-icon-container" [class.edit-mode]="editMode">
+  <div class="app-icon">
+    <img *ngIf="safeIconUrl" [src]="safeIconUrl" alt="{{ app.name }}" (error)="onImageError()" />
+    <div *ngIf="!safeIconUrl" class="default-icon">{{ app.name.charAt(0) }}</div>
+    
+    <div *ngIf="app.notifications && app.notifications > 0 && !editMode" class="notification-badge">
+      {{ app.notifications > 99 ? '99+' : app.notifications }}
+    </div>
+  </div>
+  
+  <button *ngIf="editMode" class="delete-button" (click)="onDeleteClick($event)">×</button>
+</div>

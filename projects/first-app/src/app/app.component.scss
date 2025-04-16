@@ -1,0 +1,17 @@
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .app-container {
+    height: 413px;
+    width: 1280px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #121212;
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative; 
+  }

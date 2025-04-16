@@ -1,0 +1,58 @@
+<div class="pin-code-container">
+    <div class="two-column-layout">
+      <!-- Colonne gauche -->
+      <div class="left-column">
+        <h2 class="title">Entrez votre code voucher</h2>
+        
+        <div class="input-container">
+          <input 
+            type="text" 
+            class="code-input" 
+            [(ngModel)]="voucherCode" 
+            [readonly]="true"
+            placeholder="XX-XXXX-XXXX-XXXX-XXXX">
+          <button *ngIf="voucherCode" class="clear-button" (click)="clearCode()">×</button>
+        </div>
+        
+        <!-- Format note supprimé ici -->
+        
+        <button 
+          class="validate-button" 
+          [disabled]="!voucherCode.match(validCodePattern)"
+          (click)="validateCode()">
+          VALIDER LE CODE
+        </button>
+      </div>
+      
+      <!-- Séparateur vertical -->
+      <div class="separator"></div>
+      
+      <!-- Colonne droite - Clavier numérique -->
+      <div class="right-column">
+        <div class="numpad">
+          <div class="numpad-row">
+            <button class="numpad-key" (click)="appendDigit('1')">1</button>
+            <button class="numpad-key" (click)="appendDigit('2')">2</button>
+            <button class="numpad-key" (click)="appendDigit('3')">3</button>
+          </div>
+          <div class="numpad-row">
+            <button class="numpad-key" (click)="appendDigit('4')">4</button>
+            <button class="numpad-key" (click)="appendDigit('5')">5</button>
+            <button class="numpad-key" (click)="appendDigit('6')">6</button>
+          </div>
+          <div class="numpad-row">
+            <button class="numpad-key" (click)="appendDigit('7')">7</button>
+            <button class="numpad-key" (click)="appendDigit('8')">8</button>
+            <button class="numpad-key" (click)="appendDigit('9')">9</button>
+          </div>
+          <div class="numpad-row">
+            <button class="numpad-key" (click)="clearCode()">C</button>
+            <button class="numpad-key" (click)="appendDigit('0')">0</button>
+            <button class="numpad-key backspace" (click)="removeLastDigit()">
+              <mat-icon>backspace</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

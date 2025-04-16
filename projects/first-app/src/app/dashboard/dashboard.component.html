@@ -1,0 +1,56 @@
+<div class="context-menu" *ngIf="showContextMenu" [style.left.px]="contextMenuPosition.x" [style.top.px]="contextMenuPosition.y">
+  <div class="menu-item" (click)="editApp()">Modifier</div>
+  <div class="menu-item" (click)="deleteApp()">Supprimer</div>
+  <div class="menu-item" (click)="enterEditMode()">Déplacer</div>
+</div>
+
+<div class="dashboard-container" (contextmenu)="$event.preventDefault()" [class.edit-mode]="editMode">
+  <div class="pages-container" [style.transform]="'translateX(' + (-currentPage * 100) + '%)'">
+    <div class="page" *ngFor="let page of pages; let i = index" [attr.data-page-index]="i" 
+         cdkDropList 
+         [cdkDropListData]="page"
+         [cdkDropListConnectedTo]="getConnectedListIds()"
+         (cdkDropListDropped)="drop($event)"
+         [id]="'page-' + i"
+         cdkDropListOrientation="horizontal">
+      <div class="app-grid">
+        <div *ngFor="let app of page; let appIndex = index" 
+             class="app-item" 
+             [class.wiggling]="editMode"
+             cdkDrag
+             [cdkDragData]="app">
+          <app-icon 
+            [app]="app" 
+            [editMode]="editMode" 
+            (click)="!editMode ? openApp(app) : null" 
+            (contextmenu)="showAppContextMenu($event, app, i, appIndex)"
+            (delete)="deleteAppInEditMode(i, appIndex)">
+          </app-icon>
+          <div class="app-name">{{ app.name }}</div>
+          <div *cdkDragPreview class="drag-preview">
+            <app-icon [app]="app" [editMode]="false"></app-icon>
+            <div class="app-name">{{ app.name }}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="add-button-container" *ngIf="!editMode">
+        <div class="add-button" (click)="openAddAppDialog(i)">
+          <div class="add-icon">+</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="page-indicators" *ngIf="!editMode">
+    <div *ngFor="let page of pages; let i = index" 
+         class="indicator" 
+         [class.active]="i === currentPage"
+         (click)="goToPage(i)">
+    </div>
+  </div>
+  
+  <div class="edit-mode-controls" *ngIf="editMode">
+    <button mat-raised-button color="primary" (click)="exitEditMode()">Terminer</button>
+  </div>
+</div>
